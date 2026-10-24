@@ -3,700 +3,565 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SentinelFlow — Autonomous Multi-Agent Cybersecurity Swarm on Fetch.ai</title>
-  <meta name="description" content="SentinelFlow is a decentralized 5-agent cybersecurity swarm built on Fetch.ai that stops account takeovers in 1 second for 10 cents ($0.10 / 0.1 FET).">
+  <title>SentinelFlow — Kick Hackers Out in 1 Second for 10 Cents</title>
+  <meta name="description" content="Autonomous Fetch.ai multi-agent security swarm that detects account takeovers, severs attacker sessions in 1 second, and issues SHA-256 cryptographic proof.">
   
-  <!-- Modern Typography from Google Fonts -->
+  <!-- Modern Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
   <!-- Top Announcement Bar -->
-  <aside class="announcement-bar">
-    <div class="announcement-content">
-      <span class="badge pulse-badge">LIVE SWARM</span>
-      <span>Fetch.ai Hackathon 2026: SentinelFlow is deployed & listening on Agentverse Mailbox</span>
-      <a href="#simulator" class="announcement-link">Test Live Flow &rarr;</a>
+  <aside class="top-bar">
+    <div class="top-bar-inner">
+      <span class="status-pill">
+        <span class="pulse-dot"></span>
+        FETCH.AI MAINNET SWARM
+      </span>
+      <span class="top-bar-text">Live 5-agent security swarm connected to Agentverse Mailbox</span>
+      <span class="top-bar-cost">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" class="svg-icon">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        0.1 FET ($0.10) / rescue
+      </span>
     </div>
   </aside>
 
-  <!-- Navigation Bar -->
-  <header class="navbar-wrapper">
-    <nav class="navbar" aria-label="Main Navigation">
-      <div class="nav-brand">
-        <div class="brand-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="shield-svg">
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             <path d="M9 12l2 2 4-4"/>
           </svg>
         </div>
-        <div class="brand-text">
+        <div class="brand-title">
           <span class="brand-name">Sentinel<span>Flow</span></span>
-          <span class="brand-tag">Fetch.ai SecOps Swarm</span>
+          <span class="brand-sub">Autonomous Account Defense</span>
         </div>
       </div>
 
       <div class="nav-links">
-        <a href="#problem" class="nav-item">The Panic Window</a>
-        <a href="#simulator" class="nav-item highlight-nav">Flow Simulator</a>
-        <a href="#swarm" class="nav-item">5-Agent Swarm</a>
-        <a href="#differentiation" class="nav-item">Why We Win</a>
-        <a href="#chat-demo" class="nav-item">Live Agent Chat</a>
+        <a href="#console" class="nav-link">Live Console</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <a href="#chat" class="nav-link">Ask the Agent</a>
       </div>
 
-      <div class="nav-actions">
-        <div class="status-indicator" title="Connected to Agentverse Mailbox">
-          <span class="status-dot"></span>
-          <span class="status-text">Mailbox: Live</span>
+      <div class="nav-status">
+        <div class="live-indicator">
+          <span class="dot-online"></span>
+          <span class="live-text">Daemon: Live (Port 8000)</span>
         </div>
-        <a href="#simulator" class="btn btn-primary" id="btn-header-cta">
-          <span class="btn-glow"></span>
-          Run 1-Tap Defense
-        </a>
       </div>
-    </nav>
+    </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="hero-bg-glow"></div>
-    <div class="hero-grid-pattern"></div>
-    
-    <div class="hero-container">
-      <div class="hero-tagline">
-        <span class="hero-tag-icon">⚡</span>
-        <span>Sub-Second Breach Containment for Everyday People</span>
-      </div>
+  <main class="main-content">
 
-      <h1 class="hero-title">
-        The 24/7 Autonomous Bodyguard For Your Accounts. <br>
-        <span class="text-gradient">Kicks Hackers Out in 1 Second for 10 Cents.</span>
-      </h1>
-
-      <p class="hero-subtitle">
-        When a hacker steals your password at 2 AM, customer support takes <strong>48 hours</strong> to answer your ticket. 
-        <strong>SentinelFlow</strong> uses a collaborative 5-agent Fetch.ai swarm to correlate brute-force logins, 
-        sever attacker access in 1 tap, and issue mathematical SHA-256 state proof — with <strong>0.1 FET micropayments</strong>.
-      </p>
-
-      <div class="hero-cta-group">
-        <a href="#simulator" class="btn btn-hero-primary" id="btn-hero-launch">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cta-icon">
-            <polygon points="5 3 19 12 5 21 5 3"/>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" class="svg-icon text-cyan">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
           </svg>
-          Launch Interactive Flow Simulator
-        </a>
-        <a href="#chat-demo" class="btn btn-hero-secondary" id="btn-hero-chat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cta-icon">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-          Test Benchmark Q&A
-        </a>
-      </div>
+          Sub-Second Incident Containment for Everyday People
+        </div>
 
-      <!-- Live Metric Stats Strip -->
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-value text-cyan">&lt; 1 sec</div>
-          <div class="metric-label">Containment SLA (vs 48 hrs)</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value text-green">0.1 FET</div>
-          <div class="metric-label">~$0.10 USD Flat Micro-Fee</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value text-purple">5 Agents</div>
-          <div class="metric-label">Decentralized uAgents Swarm</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value text-yellow">100%</div>
-          <div class="metric-label">Deterministic (Zero Hallucinations)</div>
-        </div>
-      </div>
-    </div>
-  </section>
+        <h1 class="hero-title">
+          Kick Hackers Out of Your Account <br>
+          <span class="gradient-text">In 1 Second for 10 Cents.</span>
+        </h1>
 
-  <!-- SECTION 1: The Problem Statement (The 48-Hour Panic Window) -->
-  <section class="section problem-section" id="problem">
-    <div class="section-container">
-      <div class="section-header">
-        <span class="section-badge badge-red">THE PROBLEM</span>
-        <h2 class="section-title">The $10 Billion "48-Hour Panic Window"</h2>
-        <p class="section-desc">Traditional security works backwards. While enterprise corporations spend millions on SOC teams, everyday consumers are left defenseless.</p>
-      </div>
+        <p class="hero-desc">
+          When an intruder breaks into your email or account at 2 AM, customer support takes <strong>48 hours</strong> to answer. 
+          <strong>SentinelFlow</strong> detects brute force logins, logs the hacker out of every phone and laptop with 1 tap, and gives you a cryptographic SHA-256 safety receipt.
+        </p>
 
-      <div class="problem-vs-solution-grid">
-        <!-- The Current Nightmare -->
-        <div class="comparison-card card-nightmare">
-          <div class="card-header-status">
-            <span class="icon-danger">⚠️</span>
-            <h3>Traditional Customer Support</h3>
-            <span class="time-tag tag-slow">24 – 48 Hours SLA</span>
+        <!-- 3 Quick Value Highlights -->
+        <div class="hero-stats">
+          <div class="stat-pill">
+            <div class="stat-icon-wrap text-cyan">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div class="stat-info">
+              <strong>1 Second</strong>
+              <span>Response Time</span>
+            </div>
           </div>
 
-          <div class="timeline-stepper">
-            <div class="timeline-step">
-              <span class="step-time">00:00</span>
-              <div class="step-info">
-                <strong>Attacker Breaches Account</strong>
-                <p>Credentials leaked via infostealer malware or credential stuffing from Nigeria.</p>
-              </div>
+          <div class="stat-pill">
+            <div class="stat-icon-wrap text-yellow">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                <circle cx="12" cy="12" r="2"/>
+                <path d="M6 12h.01M18 12h.01"/>
+              </svg>
             </div>
-            <div class="timeline-step">
-              <span class="step-time">00:05</span>
-              <div class="step-info">
-                <strong>Victim Files Support Ticket</strong>
-                <p>"Help! Someone logged into my Binance/Instagram from an unknown device!"</p>
-              </div>
-            </div>
-            <div class="timeline-step step-critical">
-              <span class="step-time">00:15</span>
-              <div class="step-info">
-                <strong>Damage Fully Inflicted</strong>
-                <p>Crypto drained, emails dumped, 2FA recovery email changed. User locked out.</p>
-              </div>
-            </div>
-            <div class="timeline-step step-dead">
-              <span class="step-time">+48:00</span>
-              <div class="step-info">
-                <strong>Automated Support Reply</strong>
-                <p><em>"We received your ticket. Please send a photo holding your government ID..."</em> (Too late!)</p>
-              </div>
+            <div class="stat-info">
+              <strong>0.1 FET (~$0.10)</strong>
+              <span>Pay-Per-Rescue</span>
             </div>
           </div>
-        </div>
 
-        <!-- The SentinelFlow Difference -->
-        <div class="comparison-card card-sentinel">
-          <div class="card-header-status">
-            <span class="icon-success">🛡️</span>
-            <h3>SentinelFlow Autonomous Swarm</h3>
-            <span class="time-tag tag-fast">&lt; 1 Second Execution</span>
-          </div>
-
-          <div class="timeline-stepper">
-            <div class="timeline-step step-active">
-              <span class="step-time">00:01</span>
-              <div class="step-info">
-                <strong>Swarm Detects & Analyzes Threat</strong>
-                <p>Investigator & Analyst agents correlate 5 failed logins + breach from Lagos, Nigeria.</p>
-              </div>
+          <div class="stat-pill">
+            <div class="stat-icon-wrap text-green">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
             </div>
-            <div class="timeline-step step-active">
-              <span class="step-time">00:02</span>
-              <div class="step-info">
-                <strong>Plain-English Alert with 1-Tap Button</strong>
-                <p>User receives interactive card: <em>"Someone is in your account right now. Kick them out?"</em></p>
-              </div>
-            </div>
-            <div class="timeline-step step-active">
-              <span class="step-time">00:03</span>
-              <div class="step-info">
-                <strong>1-Tap Containment Executed</strong>
-                <p>Containment Agent invalidates all tokens, drops connections, and blocks attacker IP.</p>
-              </div>
-            </div>
-            <div class="timeline-step step-success">
-              <span class="step-time">00:04</span>
-              <div class="step-info">
-                <strong>SHA-256 Digital Receipt Issued</strong>
-                <p>Auditor verifies 0 active sessions, logs cryptographic state proof. Account 100% safe.</p>
-              </div>
+            <div class="stat-info">
+              <strong>SHA-256</strong>
+              <span>Tamper-Proof Proof</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- SECTION 2: THE STAR FLOW SIMULATOR -->
-  <section class="section simulator-section" id="simulator">
-    <div class="section-container">
-      <div class="section-header">
-        <span class="section-badge badge-cyan">INTERACTIVE DEMO</span>
-        <h2 class="section-title">Live 5-Step Swarm Flow Simulator</h2>
-        <p class="section-desc">Experience the exact sub-second autonomous multi-agent defense workflow right in your browser.</p>
-      </div>
-
-      <div class="simulator-wrapper">
-        <!-- Simulator Controls Bar -->
-        <div class="sim-controls">
-          <div class="target-input-box">
-            <label for="target-account-input">Target Identity / Email to Scan:</label>
-            <div class="input-action-row">
-              <input type="text" id="target-account-input" value="alex@gmail.com" placeholder="e.g. alex@gmail.com or demo-user-104">
-              <button class="btn btn-scan" id="btn-start-scan">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
-                  <circle cx="11" cy="11" r="8"/>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    <!-- Interactive Live SecOps Console -->
+    <section class="console-section" id="console">
+      <div class="section-container">
+        <div class="console-card">
+          
+          <div class="console-header">
+            <div class="console-title-wrap">
+              <div class="console-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="4 17 10 11 4 5"/>
+                  <line x1="12" y1="19" x2="20" y2="19"/>
                 </svg>
-                Scan Account (Free)
+              </div>
+              <div>
+                <h2>Live Incident Defense Console</h2>
+                <p>Test real security investigations powered by Fetch.ai uAgents and real Python engine</p>
+              </div>
+            </div>
+            <div class="console-status" id="console-status-badge">
+              <span class="status-dot"></span>
+              <span id="telemetry-text">SWARM: READY</span>
+            </div>
+          </div>
+
+          <!-- Account Selector Pills -->
+          <div class="account-selector">
+            <span class="selector-label">Test Account:</span>
+            <div class="preset-buttons">
+              <button class="account-btn active" data-target="alex@gmail.com">
+                <span class="account-dot dot-critical"></span>
+                <span>alex@gmail.com</span>
+                <span class="account-tag tag-critical">Intruder Active</span>
+              </button>
+
+              <button class="account-btn" data-target="demo-user-104">
+                <span class="account-dot dot-warning"></span>
+                <span>demo-user-104</span>
+                <span class="account-tag tag-warning">Brute Force</span>
+              </button>
+
+              <button class="account-btn" data-target="sarah-dev-92">
+                <span class="account-dot dot-safe"></span>
+                <span>sarah-dev-92</span>
+                <span class="account-tag tag-safe">Safe Baseline</span>
               </button>
             </div>
           </div>
 
-          <div class="sim-quick-presets">
-            <span class="preset-label">Quick Scenarios:</span>
-            <button class="preset-pill active" data-target="alex@gmail.com">🚨 Compromised User (alex@gmail.com)</button>
-            <button class="preset-pill" data-target="demo-user-104">⚠️ Enterprise Breach (demo-user-104)</button>
-            <button class="preset-pill" data-target="sarah-dev-92">✅ Safe Account (sarah-dev-92)</button>
-          </div>
-        </div>
-
-        <!-- Visual Multi-Agent Swarm Arena -->
-        <div class="swarm-arena">
-          <div class="swarm-title-bar">
-            <span>FETCH.AI uAGENTS SWARM EXECUTION MESH</span>
-            <span id="swarm-telemetry-status">STATUS: STANDBY</span>
-          </div>
-
-          <div class="swarm-nodes-row">
-            <!-- Node 1: Coordinator -->
-            <div class="agent-node" id="node-coordinator">
-              <div class="agent-avatar avatar-coordinator">🎯</div>
-              <div class="agent-meta">
-                <h4>Coordinator</h4>
-                <span class="agent-role">ACP Dispatch</span>
-                <span class="agent-addr">agent1qwst...</span>
-              </div>
-              <div class="node-pulse"></div>
+          <!-- Input Bar & Action -->
+          <div class="scan-bar">
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" class="input-icon">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <input type="text" id="target-account-input" value="alex@gmail.com" placeholder="Enter user ID or email...">
             </div>
-
-            <!-- Connector 1 -->
-            <div class="mesh-connector" id="conn-1">
-              <div class="connector-line"></div>
-              <div class="connector-packet"></div>
-            </div>
-
-            <!-- Node 2: Investigator -->
-            <div class="agent-node" id="node-investigator">
-              <div class="agent-avatar avatar-investigator">🔎</div>
-              <div class="agent-meta">
-                <h4>Investigator</h4>
-                <span class="agent-role">SIEM Telemetry</span>
-                <span class="agent-addr">agent1q2g6...</span>
-              </div>
-              <div class="node-pulse"></div>
-            </div>
-
-            <!-- Connector 2 -->
-            <div class="mesh-connector" id="conn-2">
-              <div class="connector-line"></div>
-              <div class="connector-packet"></div>
-            </div>
-
-            <!-- Node 3: Analyst -->
-            <div class="agent-node" id="node-analyst">
-              <div class="agent-avatar avatar-analyst">🧠</div>
-              <div class="agent-meta">
-                <h4>Threat Analyst</h4>
-                <span class="agent-role">MITRE Scoring</span>
-                <span class="agent-addr">agent1qfj3...</span>
-              </div>
-              <div class="node-pulse"></div>
-            </div>
-
-            <!-- Connector 3 -->
-            <div class="mesh-connector" id="conn-3">
-              <div class="connector-line"></div>
-              <div class="connector-packet"></div>
-            </div>
-
-            <!-- Node 4: Containment -->
-            <div class="agent-node" id="node-containment">
-              <div class="agent-avatar avatar-containment">🔒</div>
-              <div class="agent-meta">
-                <h4>Containment</h4>
-                <span class="agent-role">Zero-Trust Lock</span>
-                <span class="agent-addr">agent1qwh6...</span>
-              </div>
-              <div class="node-pulse"></div>
-            </div>
-
-            <!-- Connector 4 -->
-            <div class="mesh-connector" id="conn-4">
-              <div class="connector-line"></div>
-              <div class="connector-packet"></div>
-            </div>
-
-            <!-- Node 5: Auditor -->
-            <div class="agent-node" id="node-auditor">
-              <div class="agent-avatar avatar-auditor">📜</div>
-              <div class="agent-meta">
-                <h4>Auditor</h4>
-                <span class="agent-role">SHA-256 Proof</span>
-                <span class="agent-addr">agent1qfeu...</span>
-              </div>
-              <div class="node-pulse"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Live Results Interactive Card Stage -->
-        <div class="sim-stage" id="sim-stage">
-          <!-- Step 1 Initial Standby View -->
-          <div class="stage-card standby-card" id="card-standby">
-            <div class="standby-icon">🛡️</div>
-            <h3>Ready to Scan</h3>
-            <p>Click <strong>"Scan Account (Free)"</strong> above to watch SentinelFlow's 5-Agent Swarm correlate live telemetry, detect unauthorized intruders, and issue containment.</p>
+            <button class="btn btn-scan" id="btn-run-scan">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" class="svg-icon">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              Scan Account (Free)
+            </button>
           </div>
 
-          <!-- Step 2 Active Threat Briefing Card (Hidden until scan) -->
-          <div class="stage-card threat-card hidden" id="card-threat">
-            <div class="threat-header">
-              <div class="threat-badge-row">
-                <span class="badge badge-critical" id="threat-risk-badge">🚨 CRITICAL RISK: 100/100</span>
-                <span class="badge badge-mitre">MITRE ATT&CK: T1110, T1078, T1556</span>
+          <!-- Real-Time 5-Agent Swarm Pipeline -->
+          <div class="swarm-pipeline">
+            <div class="pipeline-step" id="step-coord">
+              <div class="step-circle">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                </svg>
               </div>
-              <h3 id="threat-card-title">🚨 Unauthorized Login Detected on alex@gmail.com!</h3>
+              <div class="step-label">Coordinator</div>
             </div>
 
-            <div class="threat-body-grid">
-              <div class="threat-evidence-box">
-                <h4>Correlated SIEM Evidence:</h4>
-                <ul id="threat-evidence-list">
-                  <li><strong>Lagos, Nigeria (IP 198.51.100.42):</strong> 5 consecutive failed logins in 50 seconds (brute-force burst).</li>
-                  <li><strong>Impossible Travel:</strong> Successful login from unfamiliar Linux client immediately following failed attempts.</li>
-                  <li><strong>Privilege Escalation:</strong> Unauthorized probe targeting <code>/api/v1/auth/mfa/bypass</code>.</li>
+            <div class="pipeline-line" id="line-1"></div>
+
+            <div class="pipeline-step" id="step-invest">
+              <div class="step-circle">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+              </div>
+              <div class="step-label">Investigator</div>
+            </div>
+
+            <div class="pipeline-line" id="line-2"></div>
+
+            <div class="pipeline-step" id="step-analyst">
+              <div class="step-circle">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+              </div>
+              <div class="step-label">Threat Analyst</div>
+            </div>
+
+            <div class="pipeline-line" id="line-3"></div>
+
+            <div class="pipeline-step" id="step-contain">
+              <div class="step-circle">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+              <div class="step-label">Containment</div>
+            </div>
+
+            <div class="pipeline-line" id="line-4"></div>
+
+            <div class="pipeline-step" id="step-auditor">
+              <div class="step-circle">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+              </div>
+              <div class="step-label">Auditor</div>
+            </div>
+          </div>
+
+          <!-- Dynamic Display Stages -->
+          <div class="console-body">
+
+            <!-- State 1: Standby -->
+            <div class="stage-box" id="box-standby">
+              <div class="standby-icon">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8" class="text-cyan">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <circle cx="12" cy="11" r="3"/>
+                </svg>
+              </div>
+              <h3>Ready to Inspect Account Security</h3>
+              <p>Select one of the accounts above and click <strong>"Scan Account (Free)"</strong> to analyze real login telemetry, detect impossible travel, and score threat risk.</p>
+            </div>
+
+            <!-- State 2: Threat Detected -->
+            <div class="stage-box hidden" id="box-threat">
+              <div class="threat-alert-banner" id="threat-alert-banner">
+                <div class="alert-icon-wrap" id="alert-icon-wrap">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" class="text-red">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                  </svg>
+                </div>
+                <div class="alert-text">
+                  <div class="badge-row">
+                    <span class="badge" id="risk-score-badge">CRITICAL RISK: 100/100</span>
+                    <span class="badge badge-dark">MITRE ATT&CK Correlated</span>
+                  </div>
+                  <h3 id="threat-title">Unauthorized Intrusion Detected on alex@gmail.com</h3>
+                </div>
+              </div>
+
+              <div class="evidence-box">
+                <h4>Verified Evidence from Security Logs:</h4>
+                <ul class="evidence-list" id="evidence-list">
+                  <!-- Dynamic Evidence Items -->
                 </ul>
               </div>
 
-              <div class="threat-speedometer-box">
-                <div class="gauge-circle" id="risk-gauge-circle">
-                  <div class="gauge-inner">
-                    <span class="gauge-number" id="risk-score-display">100</span>
-                    <span class="gauge-label">RISK SCORE</span>
-                  </div>
+              <!-- Action Bar -->
+              <div class="threat-actions">
+                <button class="btn btn-contain" id="btn-contain-action">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" class="svg-icon">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  <span>Kick Out Intruder & Lock Account (0.1 FET)</span>
+                </button>
+
+                <button class="btn btn-secondary" id="btn-it-was-me">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="svg-icon">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>That Was Me (Dismiss)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- State 3: Containment Executed & Verified -->
+            <div class="stage-box hidden" id="box-verified">
+              <div class="verified-header">
+                <div class="verified-icon">
+                  <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" class="text-green">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <polyline points="9 12 11 14 15 10"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="badge badge-verified">CONTAINMENT VERIFIED</div>
+                  <h3>Intruder Evicted & Account Successfully Secured</h3>
+                  <p>All active sessions terminated. Attacker IP quarantined at firewall.</p>
+                </div>
+              </div>
+
+              <!-- Certificate Grid -->
+              <div class="cert-grid">
+                <div class="cert-item">
+                  <span class="cert-label">Account Secured</span>
+                  <strong class="cert-val font-mono text-cyan" id="cert-target">alex@gmail.com</strong>
+                </div>
+                <div class="cert-item">
+                  <span class="cert-label">Remediation Action</span>
+                  <strong class="cert-val">revoke_user_sessions + block_ip</strong>
+                </div>
+                <div class="cert-item">
+                  <span class="cert-label">Active Sessions Remaining</span>
+                  <strong class="cert-val text-green">0 Sessions (Clean)</strong>
+                </div>
+                <div class="cert-item">
+                  <span class="cert-label">Fetch.ai Micropayment</span>
+                  <strong class="cert-val text-yellow">0.1 FET (~$0.10)</strong>
+                </div>
+              </div>
+
+              <!-- Hash Box -->
+              <div class="hash-box">
+                <div class="hash-title">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="svg-icon text-cyan">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  <span>Cryptographic SHA-256 Safety Proof:</span>
+                </div>
+                <div class="hash-content">
+                  <code id="cert-hash">2c934cb27193e7d33e61ba7ea00d635a30b2ad7aa1587e04aaee2feb75dbc748</code>
+                  <button class="btn btn-copy" id="btn-copy-hash">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="svg-icon">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span>Copy Proof</span>
+                  </button>
+                </div>
+                <small class="hash-note">Verifiable mathematical proof. Admissible for insurance and bank credit dispute records.</small>
+              </div>
+
+              <div class="verified-actions">
+                <button class="btn btn-primary" id="btn-reset-console">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="svg-icon">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                  </svg>
+                  Scan Another Account
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works (Simple 3 Steps) -->
+    <section class="how-section" id="how-it-works">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">DEAD SIMPLE DEFENSE</span>
+          <h2>How SentinelFlow Protects You in 3 Steps</h2>
+          <p>No cybersecurity knowledge needed. Talk in plain English and let autonomous agents handle the rest.</p>
+        </div>
+
+        <div class="cards-grid-3">
+          <!-- Step 1 -->
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <div class="card-icon text-cyan">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </div>
+            <h3>Spot Password Thieves</h3>
+            <p>Our Investigator Agent monitors your login records in real time. If someone in another country guesses your password, we catch them in milliseconds.</p>
+            <span class="card-badge badge-free">100% Free Scans</span>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <div class="card-icon text-yellow">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <h3>Kick Them Out in 1 Tap</h3>
+            <p>Hit the button or reply "Kick them out". Our Containment Agent instantly terminates all attacker sessions everywhere and blocks their laptop or phone.</p>
+            <span class="card-badge badge-paid">0.1 FET (~$0.10)</span>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <div class="card-icon text-green">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <polyline points="9 12 11 14 15 10"/>
+              </svg>
+            </div>
+            <h3>Get Cryptographic Proof</h3>
+            <p>Our Auditor Agent inspects the system to prove 0 sessions remain, computing a SHA-256 digital certificate you can send to banks or insurers.</p>
+            <span class="card-badge badge-free">Verified On-Chain</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Agent Chat Playground -->
+    <section class="chat-section" id="chat">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">NATURAL LANGUAGE SecOps</span>
+          <h2>Talk to SentinelFlow Like a Real Person</h2>
+          <p>No security jargon required. Ask any question or tap one of the suggested prompts below.</p>
+        </div>
+
+        <div class="chat-layout">
+          <!-- Suggested Prompts -->
+          <div class="chat-presets">
+            <h4>Quick Questions:</h4>
+
+            <button class="preset-btn" data-query="Scan alex@gmail.com for suspicious logins">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" class="svg-icon text-cyan">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <span>Scan alex@gmail.com</span>
+            </button>
+
+            <button class="preset-btn" data-query="Kick out the intruder on alex@gmail.com">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" class="svg-icon text-red">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <span>Kick out intruder (0.1 FET)</span>
+            </button>
+
+            <button class="preset-btn" data-query="How much does SentinelFlow cost to use?">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" class="svg-icon text-yellow">
+                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                <circle cx="12" cy="12" r="2"/>
+              </svg>
+              <span>How much does it cost?</span>
+            </button>
+
+            <button class="preset-btn" data-query="How do I know for sure the hacker is gone and can't get back in?">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" class="svg-icon text-green">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span>How do I know they're gone?</span>
+            </button>
+
+            <button class="preset-btn" data-query="Can you explain what SentinelFlow does in simple words?">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" class="svg-icon text-cyan">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              <span>Explain in simple words</span>
+            </button>
+          </div>
+
+          <!-- Chat Window Box -->
+          <div class="chat-window">
+            <div class="chat-header">
+              <div class="agent-avatar">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" class="text-cyan">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+              </div>
+              <div class="agent-details">
+                <strong>SentinelFlow SecOps Coordinator</strong>
+                <span>agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy</span>
+              </div>
+              <span class="agent-status-tag">Connected</span>
+            </div>
+
+            <div class="chat-body" id="chat-messages">
+              <!-- Initial Greeting -->
+              <div class="chat-bubble bubble-agent">
+                <div class="bubble-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                </div>
+                <div class="bubble-text">
+                  <p><strong>Hello! I am SentinelFlow, your 24/7 personal security bodyguard.</strong></p>
+                  <p>I monitor your logins in real time. Click any prompt on the left or type your question below to test live incident response.</p>
                 </div>
               </div>
             </div>
 
-            <!-- Action Buttons Box -->
-            <div class="threat-actions-box">
-              <button class="btn btn-contain-emergency" id="btn-kick-out">
-                <span class="btn-lock-icon">🔒</span>
-                Kick Out Intruder & Lock Account (0.1 FET)
-              </button>
-              <button class="btn btn-secondary-action" id="btn-view-logs">
-                📜 View Raw History
-              </button>
-              <button class="btn btn-dismiss-action" id="btn-it-was-me">
-                💬 It Was Me (Clear Alert)
+            <!-- Chat Input -->
+            <div class="chat-footer">
+              <input type="text" id="chat-input" placeholder="Type a message (e.g. 'Scan alex@gmail.com' or 'Kick them out')...">
+              <button class="btn btn-send" id="btn-chat-send" aria-label="Send">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
               </button>
             </div>
           </div>
-
-          <!-- Step 3 Verified Cryptographic Receipt Card (Hidden until containment) -->
-          <div class="stage-card verified-card hidden" id="card-verified">
-            <div class="verified-header">
-              <div class="verified-icon-check">✓</div>
-              <div>
-                <span class="badge badge-verified">CONTAINMENT VERIFIED</span>
-                <h3>Account Successfully Secured & Intruder Severed</h3>
-              </div>
-            </div>
-
-            <div class="verified-details-grid">
-              <div class="detail-item">
-                <span class="detail-label">Target Identity:</span>
-                <span class="detail-val font-mono" id="cert-target-val">alex@gmail.com</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Action Executed:</span>
-                <span class="detail-val text-green font-mono">revoke_user_sessions + block_ip</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Post-Remediation State:</span>
-                <span class="detail-val text-green font-mono">0 Active Sessions (Quarantined)</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Settlement Protocol:</span>
-                <span class="detail-val text-cyan font-mono">0.1 FET Settled (Fetch.ai Escrow)</span>
-              </div>
-            </div>
-
-            <!-- Cryptographic SHA-256 Hash Display -->
-            <div class="hash-box">
-              <div class="hash-title">
-                <span>🔐 Cryptographic SHA-256 State Proof (Immutable Audit Ledger):</span>
-                <button class="btn-copy-hash" id="btn-copy-hash" title="Copy SHA-256 Hash">Copy Hash</button>
-              </div>
-              <div class="hash-value font-mono" id="cert-hash-val">
-                e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-              </div>
-              <p class="hash-note">This mathematical proof cannot be altered or backdated. Submit this receipt to cyber insurance adjusters, banks, or employers as proof of immediate breach containment.</p>
-            </div>
-
-            <div class="verified-actions">
-              <button class="btn btn-primary" id="btn-reset-simulator">↺ Test Another Account</button>
-            </div>
-          </div>
-
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- SECTION 3: The 5-Agent Multi-Agent Swarm -->
-  <section class="section swarm-section" id="swarm">
-    <div class="section-container">
-      <div class="section-header">
-        <span class="section-badge badge-purple">ARCHITECTURE</span>
-        <h2 class="section-title">The 5-Agent Autonomous Swarm</h2>
-        <p class="section-desc">Each specialized agent runs natively on Fetch.ai's <code>uagents</code> framework with distinct separation of duties.</p>
-      </div>
+  </main>
 
-      <div class="agents-card-grid">
-        <!-- Agent 1 -->
-        <div class="agent-profile-card">
-          <div class="card-agent-badge">ORCHESTRATION</div>
-          <div class="agent-card-icon">🎯</div>
-          <h3>1. Coordinator Agent</h3>
-          <p class="agent-card-desc">Interfaces directly with ASI:One and Agentverse Mailbox via the Agent Chat Protocol (ACP). Handles human prose, button clicks, and swarm dispatch.</p>
-          <div class="agent-card-tech">
-            <span class="tech-tag">Agent Chat Protocol</span>
-            <span class="tech-tag">Mailbox 24/7</span>
-          </div>
-        </div>
-
-        <!-- Agent 2 -->
-        <div class="agent-profile-card">
-          <div class="card-agent-badge">TELEMETRY</div>
-          <div class="agent-card-icon">🔎</div>
-          <h3>2. Investigator Agent</h3>
-          <p class="agent-card-desc">Deterministically queries SIEM records and authentication logs. Neutralizes indirect prompt injection attacks embedded inside malicious telemetry.</p>
-          <div class="agent-card-tech">
-            <span class="tech-tag">SIEM Search</span>
-            <span class="tech-tag">Injection Defense</span>
-          </div>
-        </div>
-
-        <!-- Agent 3 -->
-        <div class="agent-profile-card">
-          <div class="card-agent-badge">CORRELATION</div>
-          <div class="agent-card-icon">🧠</div>
-          <h3>3. Threat Analyst Agent</h3>
-          <p class="agent-card-desc">Maps attack vectors to the MITRE ATT&CK framework (T1110 Brute Force, T1078 Valid Accounts). Computes deterministic risk scores (0–100) with zero hallucinations.</p>
-          <div class="agent-card-tech">
-            <span class="tech-tag">MITRE ATT&CK</span>
-            <span class="tech-tag">Zero Hallucinations</span>
-          </div>
-        </div>
-
-        <!-- Agent 4 -->
-        <div class="agent-profile-card">
-          <div class="card-agent-badge">REMEDIATION</div>
-          <div class="agent-card-icon">🔒</div>
-          <h3>4. Containment Agent</h3>
-          <p class="agent-card-desc">Enforces Human-in-the-Loop policy gates. Mandates cryptographic approval tokens before executing instant session revocation and perimeter IP quarantine.</p>
-          <div class="agent-card-tech">
-            <span class="tech-tag">Zero-Trust Lock</span>
-            <span class="tech-tag">HITL Policy Gate</span>
-          </div>
-        </div>
-
-        <!-- Agent 5 -->
-        <div class="agent-profile-card">
-          <div class="card-agent-badge">VERIFICATION</div>
-          <div class="agent-card-icon">📜</div>
-          <h3>5. Auditor Agent</h3>
-          <p class="agent-card-desc">Independently inspects the authentication backend to confirm 0 active sessions, computes the SHA-256 state hash, and records the immutable receipt.</p>
-          <div class="agent-card-tech">
-            <span class="tech-tag">SHA-256 Digest</span>
-            <span class="tech-tag">Immutable Audit</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 4: How SentinelFlow Differentiates (Why We Win) -->
-  <section class="section diff-section" id="differentiation">
-    <div class="section-container">
-      <div class="section-header">
-        <span class="section-badge badge-green">COMPETITIVE MOAT</span>
-        <h2 class="section-title">How Our Approach Differentiates</h2>
-        <p class="section-desc">Why SentinelFlow wins over traditional support tickets, enterprise SOAR, and generic AI chatbots.</p>
-      </div>
-
-      <div class="diff-table-wrapper">
-        <table class="diff-table">
-          <thead>
-            <tr>
-              <th>Evaluation Dimension</th>
-              <th>Traditional Support</th>
-              <th>Enterprise SOAR ($50k+/yr)</th>
-              <th>Generic AI Chatbot</th>
-              <th class="col-highlight">SentinelFlow (Our System)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Containment Speed</strong></td>
-              <td>24 – 48 Hours</td>
-              <td>Minutes (Manual trigger)</td>
-              <td>Cannot execute actions</td>
-              <td class="col-highlight text-green"><strong>&lt; 1 Second (Instant)</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Cost Model</strong></td>
-              <td>Subscription / Retainers</td>
-              <td>$50,000 – $250,000/year</td>
-              <td>$20/mo OpenAI sub</td>
-              <td class="col-highlight text-green"><strong>0.1 FET ($0.10) Flat Pay-per-use</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Target Audience</strong></td>
-              <td>Enterprise Queue</td>
-              <td>Fortune 500 SOCs only</td>
-              <td>Casual Chat</td>
-              <td class="col-highlight text-green"><strong>Everyday Consumers & Prosumers</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Security Integrity</strong></td>
-              <td>Manual Human errors</td>
-              <td>Complex custom playbooks</td>
-              <td>Vulnerable to Prompt Injection</td>
-              <td class="col-highlight text-green"><strong>150% Secure (Zero LLM in exec path)</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Verifiable Proof</strong></td>
-              <td>Closed ticket email</td>
-              <td>Proprietary internal log</td>
-              <td>None (Hallucinated text)</td>
-              <td class="col-highlight text-green"><strong>Cryptographic SHA-256 State Proof</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Multi-Agent Swarm</strong></td>
-              <td>Human departments</td>
-              <td>Monolithic software</td>
-              <td>Single prompt wrapper</td>
-              <td class="col-highlight text-green"><strong>5 Specialized Fetch.ai uAgents</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 5: Live Interactive Chat Agent Playground -->
-  <section class="section chat-demo-section" id="chat-demo">
-    <div class="section-container">
-      <div class="section-header">
-        <span class="section-badge badge-yellow">LIVE AGENT PLAYGROUND</span>
-        <h2 class="section-title">Test the Real Agent Prompts</h2>
-        <p class="section-desc">Click any of the benchmark questions below to see how SentinelFlow's live Coordinator responds with rich formatting and instant answers.</p>
-      </div>
-
-      <div class="chat-playground-wrapper">
-        <!-- Preset Prompts Sidebar -->
-        <div class="chat-prompts-sidebar">
-          <h4>Click to Ask Agent:</h4>
-          
-          <button class="chat-preset-btn" data-query="Can you show me the login history for my account so I can see who accessed it recently?">
-            <span class="q-num">Q1</span>
-            <span class="q-text">Show login history & who accessed</span>
-          </button>
-
-          <button class="chat-preset-btn" data-query="After you kick out the intruder, how do I know for sure they're actually gone and can't get back in?">
-            <span class="q-num">Q2</span>
-            <span class="q-text">How do I know they can't get back in?</span>
-          </button>
-
-          <button class="chat-preset-btn" data-query="Someone logged into my account from a device I don't recognize. How much will it cost to kick them out and lock my account right now?">
-            <span class="q-num">Q3</span>
-            <span class="q-text">How much does it cost?</span>
-          </button>
-
-          <button class="chat-preset-btn" data-query="I think someone got into my email account — can you scan alex@gmail.com and tell me if there are any suspicious logins?">
-            <span class="q-num">Q4</span>
-            <span class="q-text">Scan alex@gmail.com for breach</span>
-          </button>
-
-          <button class="chat-preset-btn" data-query="What is the SHA-256 safety certificate and how can I use it as proof that my account is secure?">
-            <span class="q-num">Q5</span>
-            <span class="q-text">What is the SHA-256 certificate?</span>
-          </button>
-
-          <button class="chat-preset-btn" data-query="status">
-            <span class="q-num">⚡</span>
-            <span class="q-text">Agent System Status & Health</span>
-          </button>
-
-          <button class="chat-preset-btn" data-query="can we make this into simple">
-            <span class="q-num">💡</span>
-            <span class="q-text">Explain in simple words</span>
-          </button>
-        </div>
-
-        <!-- Chat Window Simulator -->
-        <div class="chat-window-box">
-          <div class="chat-window-header">
-            <div class="chat-agent-info">
-              <span class="chat-status-dot"></span>
-              <div>
-                <strong>SentinelFlow SecOps Coordinator</strong>
-                <span class="chat-sub">agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy</span>
-              </div>
-            </div>
-            <div class="chat-agent-badge">ACP 0.1.0</div>
-          </div>
-
-          <div class="chat-messages-container" id="chat-messages-container">
-            <!-- Welcome Initial Message -->
-            <div class="chat-bubble bubble-agent">
-              <div class="bubble-avatar">🛡️</div>
-              <div class="bubble-content">
-                <p>👋 <strong>Hey there! I'm SentinelFlow, your personal security bodyguard.</strong></p>
-                <p>I monitor your logins 24/7. Click any question on the left or type your query below to test me!</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="chat-input-bar">
-            <input type="text" id="chat-user-input" placeholder="Type a message (e.g. 'Scan alex@gmail.com' or 'How much does it cost?')...">
-            <button class="btn btn-chat-send" id="btn-chat-send">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="22" y1="2" x2="11" y2="13"/>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
+  <!-- Clean Footer -->
   <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-brand">
+    <div class="footer-inner">
+      <div class="footer-left">
         <span class="brand-name">Sentinel<span>Flow</span></span>
         <p>Decentralized Autonomous Cybersecurity Multi-Agent Swarm built on Fetch.ai uAgents.</p>
       </div>
-
-      <div class="footer-links">
-        <div class="footer-col">
-          <h5>Core Stack</h5>
-          <span>Fetch.ai uAgents</span>
-          <span>Agent Chat Protocol (ACP)</span>
-          <span>Agentverse Mailbox</span>
-          <span>ASI:One LLM</span>
-        </div>
-        <div class="footer-col">
-          <h5>Live Coordinator</h5>
-          <span class="font-mono text-cyan">agent1qwstka0f...</span>
-          <span>Port 8000 (Daemon)</span>
-          <span>26/26 Tests Green</span>
-        </div>
+      <div class="footer-right">
+        <span>Fetch.ai Hackathon 2026</span>
+        <span>•</span>
+        <span>Agentverse Mailbox: Live</span>
+        <span>•</span>
+        <span>26/26 Tests Passing</span>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <p>© 2026 SentinelFlow. Built for the Fetch.ai & ASI:One Innovation Hackathon.</p>
     </div>
   </footer>
 
