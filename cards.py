@@ -471,7 +471,7 @@ def build_welcome_card() -> dict[str, Any]:
     section: dict[str, Any] = {
         "type": "section",
         "title": "Welcome to SentinelFlow SecOps Agent",
-        "subtitle": "Autonomous Cyber Incident Triage & Verified Response • Fetch-A-Thon 3.0",
+        "subtitle": "Your Personal Security Guard against Hackers & Unauthorized Logins",
         "children": [
             {
                 "type": "group",
@@ -479,13 +479,13 @@ def build_welcome_card() -> dict[str, Any]:
                 "gap": 8,
                 "children": [
                     {"type": "badge", "label": "STATUS: ONLINE", "variant": "success"},
-                    {"type": "badge", "label": "ASI:ONE READY", "variant": "info"},
-                    {"type": "badge", "label": "FETCH-A-THON 3.0", "variant": "default"},
+                    {"type": "badge", "label": "1-TAP RESCUE", "variant": "info"},
+                    {"type": "badge", "label": "NO TECH JARGON", "variant": "default"},
                 ],
             },
             {
                 "type": "heading",
-                "value": "What SentinelFlow Can Do",
+                "value": "How I Keep You Safe",
                 "level": 3,
             },
             {
@@ -493,17 +493,16 @@ def build_welcome_card() -> dict[str, Any]:
                 "direction": "column",
                 "gap": 4,
                 "children": [
-                    {"type": "text", "value": "🔍 Zero-Hallucination SIEM Investigation: Correlates authentication logs deterministically.", "style": "body"},
-                    {"type": "text", "value": "🧠 MITRE ATT&CK Threat Scoring: Mathematical formula scoring credential stuffing & impossible travel.", "style": "body"},
-                    {"type": "text", "value": "⚡ Dual-Card Interactive Approval: Inspect Card A (Risk Assessment) & Card B (Response Approval).", "style": "body"},
-                    {"type": "text", "value": "💰 Fetch.ai Payment Protocol: Micro-settlements at 0.1 FET per remediation action.", "style": "body"},
-                    {"type": "text", "value": "🔐 Cryptographic Safety Receipts: Verifiable SHA-256 proof that your account was rescued.", "style": "body"},
+                    {"type": "text", "value": "🔍 Instant Account Scan: Checks recent logins to catch hackers trying to guess your password.", "style": "body"},
+                    {"type": "text", "value": "🔒 1-Tap Kick Out: Instantly logs out intruders across all phones & computers with one tap.", "style": "body"},
+                    {"type": "text", "value": "🛡️ Block Hacker Devices: Prevents the intruder from trying to log in again.", "style": "body"},
+                    {"type": "text", "value": "🧾 Digital Safety Receipt: Verifiable proof showing your account was rescued.", "style": "muted"},
                 ],
             },
             {"type": "divider"},
             {
                 "type": "heading",
-                "value": "Try It in 1 Tap (Or Type Below)",
+                "value": "Tap Any Option to Start (Or Just Type 1-4)",
                 "level": 4,
             },
             {
@@ -513,7 +512,7 @@ def build_welcome_card() -> dict[str, Any]:
                 "children": [
                     {
                         "type": "button",
-                        "label": "🚨 Scan My Account (Emergency)",
+                        "label": "🚨 1. Scan My Account (Free)",
                         "primary": True,
                         "action": {
                             "selection": {
@@ -526,7 +525,7 @@ def build_welcome_card() -> dict[str, Any]:
                     },
                     {
                         "type": "button",
-                        "label": "🔒 Lock Account (0.1 FET)",
+                        "label": "🔒 2. Kick Out Intruder (0.1 FET)",
                         "primary": False,
                         "action": {
                             "selection": {
@@ -542,7 +541,19 @@ def build_welcome_card() -> dict[str, Any]:
                     },
                     {
                         "type": "button",
-                        "label": "🔍 Check Safe Account",
+                        "label": "📜 3. Login History",
+                        "primary": False,
+                        "action": {
+                            "selection": {
+                                "action": "request_more_info",
+                                "target": "demo-user-104",
+                                "source": SENTINELFLOW_SOURCE,
+                            }
+                        },
+                    },
+                    {
+                        "type": "button",
+                        "label": "🔍 4. Check Safe User",
                         "primary": False,
                         "action": {
                             "selection": {
@@ -693,6 +704,7 @@ def build_consumer_alert_card(
     location: str = "Lagos, Nigeria",
     device: str = "Linux / Unauthorized Browser",
     summary: str | None = None,
+    fee: str = "0.1 FET (~$0.12)",
 ) -> dict[str, Any]:
     """Generate Card: Consumer Account Security Alert (Plain English, Zero Jargon)."""
     default_summary = (
@@ -709,9 +721,9 @@ def build_consumer_alert_card(
                 "direction": "row",
                 "gap": 8,
                 "children": [
-                    {"type": "badge", "label": "CRITICAL THREAT", "variant": "error"},
+                    {"type": "badge", "label": "HIGH RISK", "variant": "error"},
                     {"type": "badge", "label": f"LOCATION: {location.upper()}", "variant": "warning"},
-                    {"type": "badge", "label": f"DANGER SCORE: {risk_score}/100", "variant": "info"},
+                    {"type": "badge", "label": f"THREAT SCORE: {risk_score}/100", "variant": "info"},
                 ],
             },
             {
@@ -736,7 +748,7 @@ def build_consumer_alert_card(
                 "gap": 4,
                 "children": [
                     {"type": "text", "value": f"• Protected Account: {target}", "style": "body"},
-                    {"type": "text", "value": f"• Intruder Location: {location}", "style": "body"},
+                    {"type": "text", "value": f"• Where Intruder Logged In: {location}", "style": "body"},
                     {"type": "text", "value": f"• Intruder Device: {device}", "style": "body"},
                     {"type": "text", "value": "• Your Normal Location: San Francisco, USA", "style": "muted"},
                 ],
@@ -749,8 +761,61 @@ def build_consumer_alert_card(
             },
             {
                 "type": "text",
-                "value": "Don't worry — SentinelFlow can terminate all unauthorized sessions and lock the intruder out immediately.",
+                "value": "Don't worry — I can immediately kick out the intruder and log your account out of all other devices.",
                 "style": "body",
+            },
+            {"type": "divider"},
+            {
+                "type": "heading",
+                "value": "Take Action in 1 Tap",
+                "level": 4,
+            },
+            {
+                "type": "group",
+                "direction": "row",
+                "gap": 8,
+                "children": [
+                    {
+                        "type": "button",
+                        "label": f"🔒 Kick Out Intruder ({fee})",
+                        "primary": True,
+                        "action": {
+                            "selection": {
+                                "action": "approve_containment",
+                                "target": target,
+                                "action_type": "revoke_user_sessions",
+                                "token": "CARD_ACTION_APPROVE",
+                                "fee": "0.1 FET",
+                                "mode": "consumer",
+                                "source": SENTINELFLOW_SOURCE,
+                            }
+                        },
+                    },
+                    {
+                        "type": "button",
+                        "label": "✅ That Was Me (Safe)",
+                        "primary": False,
+                        "action": {
+                            "selection": {
+                                "action": "it_was_me",
+                                "target": target,
+                                "source": SENTINELFLOW_SOURCE,
+                            }
+                        },
+                    },
+                    {
+                        "type": "button",
+                        "label": "📜 Show Login Details",
+                        "primary": False,
+                        "action": {
+                            "selection": {
+                                "action": "request_more_info",
+                                "target": target,
+                                "source": SENTINELFLOW_SOURCE,
+                            }
+                        },
+                    },
+                ],
             },
         ],
     }
@@ -787,10 +852,10 @@ def build_consumer_lockdown_card(
                 "direction": "column",
                 "gap": 4,
                 "children": [
-                    {"type": "text", "value": "✅ Instantly terminates all active logins on all phones, laptops, and web browsers.", "style": "body"},
-                    {"type": "text", "value": "✅ Locks out the intruder immediately so they can no longer access your data.", "style": "body"},
-                    {"type": "text", "value": "✅ Blocks the attacker's IP address (198.51.100.42) from attempting further logins.", "style": "body"},
-                    {"type": "text", "value": f"✅ Decentralized Fetch.ai micro-fee ({fee}) charged only on successful rescue.", "style": "muted"},
+                    {"type": "text", "value": "✅ Instantly logs out all phones, laptops, and web browsers so no one can access your data.", "style": "body"},
+                    {"type": "text", "value": "✅ Locks out the intruder immediately.", "style": "body"},
+                    {"type": "text", "value": "✅ Blocks the attacker's device from attempting any further logins.", "style": "body"},
+                    {"type": "text", "value": f"✅ Small protection fee ({fee}, ~$0.10) charged only on successful rescue.", "style": "muted"},
                 ],
             },
             {"type": "divider"},
@@ -806,7 +871,7 @@ def build_consumer_lockdown_card(
                 "children": [
                     {
                         "type": "button",
-                        "label": f"Lock My Account Now ({fee})",
+                        "label": f"🔒 Kick Out Intruder ({fee})",
                         "primary": True,
                         "action": {
                             "selection": {
@@ -822,7 +887,7 @@ def build_consumer_lockdown_card(
                     },
                     {
                         "type": "button",
-                        "label": "It Was Me (Safe)",
+                        "label": "✅ That Was Me (Safe)",
                         "primary": False,
                         "action": {
                             "selection": {
@@ -834,7 +899,7 @@ def build_consumer_lockdown_card(
                     },
                     {
                         "type": "button",
-                        "label": "Show Login Details",
+                        "label": "📜 Show Login Details",
                         "primary": False,
                         "action": {
                             "selection": {
@@ -876,7 +941,7 @@ def build_consumer_safety_certificate_card(
             },
             {
                 "type": "heading",
-                "value": "Rescue Summary",
+                "value": "What Was Done",
                 "level": 3,
             },
             {
@@ -884,16 +949,16 @@ def build_consumer_safety_certificate_card(
                 "direction": "column",
                 "gap": 4,
                 "children": [
-                    {"type": "text", "value": f"• Target Account: {target}", "style": "body"},
-                    {"type": "text", "value": "• Active Sessions: All disconnected (intruder in Lagos kicked out)", "style": "body"},
-                    {"type": "text", "value": "• Ingress Quarantine: Attacker IP 198.51.100.42 blocked", "style": "body"},
-                    {"type": "text", "value": f"• Timestamp: {timestamp}", "style": "muted"},
+                    {"type": "text", "value": f"• Protected Account: {target}", "style": "body"},
+                    {"type": "text", "value": "• Logins Terminated: Intruder in Nigeria has been kicked out of all devices", "style": "body"},
+                    {"type": "text", "value": "• Hacker Device Blocked: Attacker IP 198.51.100.42 blocked from trying again", "style": "body"},
+                    {"type": "text", "value": f"• Time Secured: {timestamp}", "style": "muted"},
                 ],
             },
             {"type": "divider"},
             {
                 "type": "heading",
-                "value": "Cryptographic Safety Proof (SHA-256)",
+                "value": "Digital Safety Receipt (Proof of Security)",
                 "level": 4,
             },
             {
@@ -912,9 +977,41 @@ def build_consumer_safety_certificate_card(
                 "direction": "column",
                 "gap": 4,
                 "children": [
-                    {"type": "text", "value": "1. Change your password right now from your personal trusted device.", "style": "body"},
+                    {"type": "text", "value": "1. Reset your password right now from your own trusted device.", "style": "body"},
                     {"type": "text", "value": "2. Enable Two-Factor Authentication (2FA) using an authenticator app.", "style": "body"},
-                    {"type": "text", "value": "3. Do not reuse old passwords across multiple accounts.", "style": "muted"},
+                    {"type": "text", "value": "3. Your account is now safe. You can scan again anytime.", "style": "muted"},
+                ],
+            },
+            {"type": "divider"},
+            {
+                "type": "group",
+                "direction": "row",
+                "gap": 8,
+                "children": [
+                    {
+                        "type": "button",
+                        "label": "🔍 Scan Account Again",
+                        "primary": True,
+                        "action": {
+                            "selection": {
+                                "action": "investigate_target",
+                                "target": target,
+                                "mode": "consumer",
+                                "source": SENTINELFLOW_SOURCE,
+                            }
+                        },
+                    },
+                    {
+                        "type": "button",
+                        "label": "🏠 Main Menu",
+                        "primary": False,
+                        "action": {
+                            "selection": {
+                                "action": "welcome",
+                                "source": SENTINELFLOW_SOURCE,
+                            }
+                        },
+                    },
                 ],
             },
         ],

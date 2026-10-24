@@ -197,3 +197,39 @@ def test_t13_consumer_emergency_lock_and_email_flow():
     assert safe_click["action"] == "it_was_me"
 
 
+def test_t14_conversational_human_parsing_and_agent_mention_stripping():
+    """T14: Validate conversational human dialogue, agent address mention stripping, and 1-4 numeric shortcuts."""
+    # 1. Bare agent address mention (user tagging agent without text)
+    bare_mention = parse_card_selection("@agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy")
+    assert bare_mention is not None
+    assert bare_mention["action"] == "welcome"
+
+    # 2. Agent mention prefix with numeric shortcode 1
+    tagged_1 = parse_card_selection("@agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy 1")
+    assert tagged_1 is not None
+    assert tagged_1["action"] == "investigate_target"
+    assert tagged_1["mode"] == "consumer"
+
+    # 3. Numeric shortcuts 1, 2, 3, 4
+    assert parse_card_selection("1")["action"] == "investigate_target"
+    assert parse_card_selection("2")["action"] == "approve_containment"
+    assert parse_card_selection("3")["action"] == "request_more_info"
+    assert parse_card_selection("4")["action"] == "investigate_target"
+
+    # 4. Human conversational phrases without jargon
+    kick = parse_card_selection("kick them out")
+    assert kick is not None
+    assert kick["action"] == "approve_containment"
+    assert kick["mode"] == "consumer"
+
+    check = parse_card_selection("is my account safe")
+    assert check is not None
+    assert check["action"] == "investigate_target"
+    assert check["mode"] == "consumer"
+
+    who = parse_card_selection("who are you")
+    assert who is not None
+    assert who["action"] == "welcome"
+
+
+

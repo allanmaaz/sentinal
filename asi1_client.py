@@ -57,24 +57,43 @@ def generate_instant_briefing(
     risk_score: int,
     evidence: list[str],
     mitre_tactics: list[str],
+    mode: str = "consumer",
 ) -> str:
-    """Zero-latency deterministic briefing grounded in SIEM evidence."""
-    if risk_score >= 80:
-        return (
-            f"Critical breach indicators correlated for {target} (Threat Score: {risk_score}/100). "
-            f"Credential stuffing and unauthorized impossible travel detected from Lagos, Nigeria (198.51.100.42). "
-            f"Immediate session termination and perimeter IP quarantine strongly recommended."
-        )
-    elif risk_score >= 50:
-        return (
-            f"Elevated risk signals detected for {target} (Threat Score: {risk_score}/100). "
-            f"Anomalous access patterns observed. Human-in-the-loop review advised."
-        )
+    """Zero-latency conversational briefing in plain English with zero jargon."""
+    if mode == "consumer":
+        if risk_score >= 80:
+            return (
+                f"Someone just logged into your account ({target}) from an unknown device in Lagos, Nigeria. "
+                "They tried guessing your password 5 times in 12 seconds before getting in. "
+                "I recommend kicking them out right now so they can't access your private info."
+            )
+        elif risk_score >= 50:
+            return (
+                f"We noticed an unfamiliar login attempt on your account ({target}) that didn't match your usual device or location. "
+                "Take a quick look below to decide if that was really you."
+            )
+        else:
+            return (
+                f"Good news! Your account ({target}) looks completely safe. "
+                "All recent logins came from your trusted device in San Francisco with no failed attempts."
+            )
     else:
-        return (
-            f"Security baseline confirmed for {target} (Threat Score: {risk_score}/100). "
-            f"All observed authentication telemetry conforms to expected user behavior."
-        )
+        if risk_score >= 80:
+            return (
+                f"Critical breach indicators correlated for {target} (Threat Score: {risk_score}/100). "
+                f"Credential stuffing and unauthorized impossible travel detected from Lagos, Nigeria (198.51.100.42). "
+                f"Immediate session termination and perimeter IP quarantine strongly recommended."
+            )
+        elif risk_score >= 50:
+            return (
+                f"Elevated risk signals detected for {target} (Threat Score: {risk_score}/100). "
+                f"Anomalous access patterns observed. Human-in-the-loop review advised."
+            )
+        else:
+            return (
+                f"Security baseline confirmed for {target} (Threat Score: {risk_score}/100). "
+                f"All observed authentication telemetry conforms to expected user behavior."
+            )
 
 
 async def craft_analyst_briefing(
@@ -83,9 +102,10 @@ async def craft_analyst_briefing(
     risk_score: int,
     evidence: list[str],
     mitre_tactics: list[str],
+    mode: str = "consumer",
 ) -> str:
-    """Generate an executive security briefing grounded strictly in evidence with zero user lag."""
-    instant = generate_instant_briefing(target, risk_level, risk_score, evidence, mitre_tactics)
+    """Generate an incident briefing grounded in evidence in simple, friendly, conversational English."""
+    instant = generate_instant_briefing(target, risk_level, risk_score, evidence, mitre_tactics, mode=mode)
 
     if not ASI_ONE_API_KEY:
         return instant
@@ -93,23 +113,32 @@ async def craft_analyst_briefing(
     evidence_text = "\n".join(f"- {e}" for e in evidence)
     mitre_text = ", ".join(mitre_tactics) or "None"
 
+    if mode == "consumer":
+        system_prompt = (
+            "You are SentinelFlow, a friendly personal security assistant talking to a normal everyday user. "
+            "Write a warm, empathetic, 2-sentence conversational message (under 45 words) explaining what happened. "
+            "NEVER use technical jargon like 'MITRE', 'SIEM', 'credential stuffing', 'impossible travel', or 'perimeter IP quarantine'. "
+            "Explain it simply so anyone can understand without needing to Google anything."
+        )
+    else:
+        system_prompt = (
+            "You are SentinelFlow, an elite autonomous SecOps triage agent. "
+            "Write a concise executive briefing (2-3 sentences, under 60 words) summarizing the threat. "
+            "Do NOT invent unobserved facts. Mention the primary attack vector and recommend containment."
+        )
+
     messages = [
         {
             "role": "system",
-            "content": (
-                "You are SentinelFlow, an elite autonomous SecOps triage agent. "
-                "Write a concise executive briefing (2-3 sentences, under 60 words) summarizing the threat. "
-                "Do NOT invent unobserved facts. Mention the primary attack vector and recommend containment."
-            ),
+            "content": system_prompt,
         },
         {
             "role": "user",
             "content": (
                 f"Target Account: {target}\n"
                 f"Risk Level: {risk_level.upper()} (Score: {risk_score}/100)\n"
-                f"MITRE ATT&CK: {mitre_text}\n"
-                f"Observed Evidence:\n{evidence_text}\n\n"
-                "Provide the executive briefing."
+                f"Evidence:\n{evidence_text}\n\n"
+                "Explain the situation simply and conversationally."
             ),
         },
     ]
@@ -117,7 +146,7 @@ async def craft_analyst_briefing(
     try:
         # Strict 1.2s timeout so the user never experiences delays
         result = await asyncio.wait_for(
-            asyncio.to_thread(_chat_completion, messages, max_tokens=100),
+            asyncio.to_thread(_chat_completion, messages, max_tokens=90),
             timeout=1.2,
         )
         if result and result.strip():

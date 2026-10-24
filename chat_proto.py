@@ -60,7 +60,7 @@ def parse_card_selection(text: str) -> dict[str, Any] | None:
     2. Natural language analyst or consumer prose
     """
     if not text:
-        return None
+        return {"action": "welcome"}
 
     stripped = text.strip()
 
@@ -78,13 +78,42 @@ def parse_card_selection(text: str) -> dict[str, Any] | None:
         except json.JSONDecodeError:
             pass
 
-    # Format 2: Natural Language input matching
-    lower = stripped.lower()
+    # Strip any agent mention like @agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy
+    clean_text = re.sub(r"@?agent1[a-z0-9]{30,}", "", stripped, flags=re.IGNORECASE).strip()
+    clean_text = re.sub(r"@agent1\w*", "", clean_text, flags=re.IGNORECASE).strip()
+
+    # If the user only sent the @agent1 tag, show the friendly welcome menu
+    if not clean_text:
+        return {"action": "welcome"}
+
+    lower = clean_text.lower()
+
+    # Quick numeric shortcodes (1 = Scan, 2 = Kick out, 3 = History, 4 = Safe / Menu)
+    if lower in ("1", "1.", "#1", "one"):
+        return {"action": "investigate_target", "target": "demo-user-104", "mode": "consumer"}
+    if lower in ("2", "2.", "#2", "two"):
+        return {
+            "action": "approve_containment",
+            "target": "demo-user-104",
+            "action_type": "revoke_user_sessions",
+            "token": "CARD_ACTION_APPROVE",
+            "fee": "0.1 FET",
+            "mode": "consumer",
+        }
+    if lower in ("3", "3.", "#3", "three"):
+        return {"action": "request_more_info", "target": "demo-user-104"}
+    if lower in ("4", "4.", "#4", "four"):
+        return {"action": "investigate_target", "target": "sarah-dev-92", "mode": "consumer"}
 
     # 1. Consumer hack alert / Investigation trigger (Check specific high-priority keywords first)
-    if any(kw in lower for kw in ("hacked", "stole my password", "someone logged into", "someone accessed", "unauthorized login", "investigate", "analyze", "check", "triage", "suspicious", "compromise")):
-        target_found = extract_target_from_text(stripped)
-        is_consumer = any(w in lower for w in ("hack", "stole", "someone", "my account", "@gmail", "@yahoo", "@outlook", "protect"))
+    if any(kw in lower for kw in (
+        "hacked", "stole my password", "someone logged into", "someone accessed",
+        "unauthorized login", "investigate", "analyze", "check", "triage",
+        "suspicious", "compromise", "scan", "check my account", "check account",
+        "am i safe", "is my account safe", "got hacked", "hack", "someone in my account"
+    )):
+        target_found = extract_target_from_text(clean_text)
+        is_consumer = not any(w in lower for w in ("soc", "mitre", "tier-3", "siem", "enterprise"))
         return {
             "action": "investigate_target",
             "target": target_found,
@@ -102,14 +131,14 @@ def parse_card_selection(text: str) -> dict[str, Any] | None:
         }
 
     # 3. Approve session revocation / Consumer Emergency Lockdown
-    # Accepts casual natural language commands like "lock", "lock it", "do it", "yes", "kick them out", "ok"
     if any(kw in lower for kw in (
         "lock my account", "lock down", "emergency lock", "approve session revocation",
         "approve containment", "approve", "revoke", "kick out", "yes, revoke",
-        "authorize", "confirm", "lock it", "do it", "stop them", "kick them", "kick them out"
-    )) or re.search(r"\b(lock|yes|yep|yeah|ok|okay)\b", lower):
-        target_found = extract_target_from_text(stripped)
-        is_consumer = any(w in lower for w in ("my account", "emergency", "lock my", "kick out", "hack", "stole", "lock it", "do it", "stop", "yes", "ok"))
+        "authorize", "confirm", "lock it", "do it", "stop them", "kick them",
+        "kick them out", "kick him out", "boot them", "log them out"
+    )) or re.search(r"\b(lock|yes|yep|yeah|ok|okay|sure)\b", lower):
+        target_found = extract_target_from_text(clean_text)
+        is_consumer = not any(w in lower for w in ("soc", "mitre", "tier-3", "siem", "enterprise"))
         return {
             "action": "approve_containment",
             "target": target_found,
@@ -121,29 +150,44 @@ def parse_card_selection(text: str) -> dict[str, Any] | None:
 
     # 4. Consumer "It was me" dismissal / Rejection
     if any(kw in lower for kw in ("it was me", "that was me", "safe", "false alarm", "my login", "ignore", "all good")) or re.search(r"\b(no|nope|me)\b", lower):
-        target_found = extract_target_from_text(stripped)
+        target_found = extract_target_from_text(clean_text)
         return {"action": "it_was_me", "target": target_found}
 
     # 5. Request more information / Forensics / History
-    if any(kw in lower for kw in ("more info", "request more info", "request more information", "forensic", "details", "raw logs", "show logs", "login history", "history")) or re.search(r"\b(details|info|more|history)\b", lower):
-        target_found = extract_target_from_text(stripped)
+    if any(kw in lower for kw in ("more info", "request more info", "request more information", "forensic", "details", "raw logs", "show logs", "login history", "history", "logins")) or re.search(r"\b(details|info|more|history|logins)\b", lower):
+        target_found = extract_target_from_text(clean_text)
         return {"action": "request_more_info", "target": target_found}
 
     # 6. Reject / Dismiss incident
     if any(kw in lower for kw in ("reject", "dismiss", "false positive", "cancel", "deny")):
-        target_found = extract_target_from_text(stripped)
+        target_found = extract_target_from_text(clean_text)
         return {"action": "dismiss_incident", "target": target_found}
 
-    # 7. Help / Greeting / Onboarding (Only when not preceded by a high-intent query)
-    if any(re.search(rf"\b{greeting}\b", lower) for greeting in ("hello", "hi", "hey", "help", "start")) or any(q in lower for q in ("who are you", "what can you do", "what to type")):
+    # Check for agent team / architecture questions
+    if any(kw in lower for kw in ("how many agents", "multi agent", "single agent", "agents are present", "what agents", "swarm", "agents")):
+        return {"action": "agent_info"}
+
+    # 7. Help / Greeting / Onboarding
+    if any(re.search(rf"\b{greeting}\b", lower) for greeting in ("hello", "hi", "hey", "help", "start", "menu", "options", "yo", "sup")) or any(q in lower for q in ("who are you", "what can you do", "what to type", "how does this work", "?")):
         return {"action": "welcome"}
+
+    # Target direct email or account name (e.g. "alex@gmail.com")
+    match = ACCOUNT_RE.search(clean_text)
+    if match and ("@" in clean_text or "user" in clean_text):
+        return {
+            "action": "investigate_target",
+            "target": match.group(1),
+            "mode": "consumer",
+        }
 
     return None
 
 
 def extract_target_from_text(text: str) -> str:
     """Extract account identifier, email, or IP address from query string."""
-    match = ACCOUNT_RE.search(text)
+    clean = re.sub(r"@?agent1[a-z0-9]{30,}", "", text, flags=re.IGNORECASE).strip()
+    clean = re.sub(r"@agent1\w*", "", clean, flags=re.IGNORECASE).strip()
+    match = ACCOUNT_RE.search(clean)
     if match:
         return match.group(1)
     # Default demonstration target
@@ -177,34 +221,53 @@ async def handle_chat_message(ctx: Context, sender: str, msg: ChatMessage):
     action_name = parsed_intent.get("action") if parsed_intent else None
 
     # Determine if this conversation should run in Consumer Mode
-    is_consumer_query = (
-        (parsed_intent and parsed_intent.get("mode") == "consumer")
-        or any(w in inbound_text.lower() for w in ("hack", "stole", "someone", "my account", "lock my", "kick out", "help me", "@gmail.", "@yahoo.", "@outlook."))
-    )
+    is_soc_mode = any(w in inbound_text.lower() for w in ("soc", "mitre", "tier-3", "siem", "enterprise", "ciso"))
+    is_consumer_query = not is_soc_mode
 
     # Handle Welcome / Onboarding
     if action_name == "welcome":
-        welcome_preamble = """### 👋 Hi there! I'm SentinelFlow, your Autonomous SecOps Multi-Agent Swarm.
+        welcome_preamble = """👋 **Hey there! I'm SentinelFlow, your personal security assistant.**
 
-You don't need any technical skills to protect your accounts. If something feels suspicious, just speak to me in simple English!
+Think of me as a 24/7 bodyguard for your accounts. You don't need any cyber knowledge — we can just talk like normal people.
 
-🛡️ **Powered by 5 Specialized Fetch.ai uAgents:**
-* 🎯 **Coordinator Agent**: Frontline chat & decision orchestrator
-* 🔎 **Investigator Agent**: Searches SIEM logs & neutralizes prompt injections
-* 🧠 **Threat Analyst Agent**: Evaluates MITRE ATT&CK risk scores (0–100)
-* 🔒 **Containment Agent**: Enforces policy gates & safe 1-tap lockouts
-* 📜 **Auditor Agent**: Issues closed-loop cryptographic SHA-256 state receipts
+Here is what I can do for you right now:
+1️⃣ **Scan Your Account** — I'll check your recent logins to see if anyone broke in (Free)
+2️⃣ **Kick Out Intruders** — If someone is in your account, I'll disconnect them everywhere immediately (0.1 FET, ~$0.10)
+3️⃣ **See Login History** — See when and where your account was accessed
+4️⃣ **Dismiss an Alert** — Let me know if a login was just you
 
----
+💬 **You can type anything naturally**, like:
+* *"I think someone got into my account"*
+* *"Can you check alex@gmail.com?"*
+* *"Kick them out"*
+* Or simply reply with a number: **1**, **2**, **3**, or **4**
 
-### 💡 Here is what you can type right now:
-* 💬 Type: **"I got hacked"** — to scan your account for unauthorized logins
-* 💬 Type: **"Check alex@gmail.com"** — to scan any specific email address
-* 💬 Type: **"Lock it"** — to immediately disconnect any active intruders (0.1 FET)
-* 💬 Type: **"Details"** — to view your recent login history
-
-👇 Or simply tap one of the quick buttons below:"""
+👇 *Or just tap one of the buttons below:*"""
         await ctx.send(sender, build_welcome_message(welcome_preamble))
+        return
+
+    # Handle Agent Team / Multi-Agent Swarm inquiries
+    if action_name == "agent_info":
+        reply = ChatMessage(
+            timestamp=datetime.now(timezone.utc),
+            msg_id=uuid4(),
+            content=[
+                TextContent(
+                    type="text",
+                    text="""We are a **5-Agent Multi-Agent Swarm** working together to protect you! 👥
+
+Here is the team:
+1. 🎯 **Coordinator Agent** — Handles this chat and coordinates the response.
+2. 🔎 **Investigator Agent** — Searches recent login records to find suspicious activity.
+3. 🧠 **Threat Analyst Agent** — Analyzes whether logins look like real attacks or false alarms.
+4. 🔒 **Containment Agent** — Kicks out intruders and blocks their devices with 1 tap.
+5. 📜 **Auditor Agent** — Double-checks that the intruder is really gone and issues your digital receipt.
+
+💬 You can ask me to **"Scan my account"** or say **"Help"** anytime!""",
+                )
+            ],
+        )
+        await ctx.send(sender, reply)
         return
 
     # Handle Consumer "It Was Me" (Safe dismissal)
@@ -217,9 +280,11 @@ You don't need any technical skills to protect your accounts. If something feels
             content=[
                 TextContent(
                     type="text",
-                    text=f"""Phew! Glad to hear that was you, {target}. The security alert has been safely dismissed with zero action taken. Your account remains safe!
+                    text=f"""Whew! That's a relief, {target}! 😊
 
-💡 **Need anything else?** Type **"Check my account"** anytime or type **"Help"**.""",
+I've cleared the alert and made a note that this login was really you. No changes were made, and your account is completely safe.
+
+💡 If you ever want to run a quick check again, just say **"Check my account"** or tap **Help**!""",
                 )
             ],
         )
@@ -236,19 +301,23 @@ You don't need any technical skills to protect your accounts. If something feels
         except Exception:
             raw_events = []
 
-        forensic_preamble = f"""### 🔍 Security Activity History: `{target}`
-Here is the recorded login history for your account:
+        forensic_preamble = f"""### 📜 Login History for `{target}`
 
-* **Target Account:** `{target}`
-* **Records Correlated:** `{len(raw_events)} events`
-* **Signals:** Rapid brute-force burst, impossible travel velocity (>800 km/h), multiple MFA challenge prompts.
+Here is what happened on your account recently:
+
+* **Account:** `{target}`
+* **Total Logins Recorded:** {len(raw_events)} events
+* **What Looked Suspicious:** 
+  1. Someone entered 5 wrong passwords in just 12 seconds from **Lagos, Nigeria**.
+  2. Then they got in from Nigeria — while your real logins are from **San Francisco, USA**!
+  3. They triggered several two-factor code prompts.
 
 ---
 
-### 💡 What you can type right now:
-* 💬 Type **"Lock it"** — to immediately kick out the intruder (0.1 FET)
-* 💬 Type **"It was me"** — if that login was just you
-* 💬 Type **"Help"** — to return to main menu"""
+### 💡 What would you like to do?
+* 💬 Say **"Kick them out"** (or tap below) — to boot the intruder off your account immediately (0.1 FET)
+* 💬 Say **"It was me"** — if that login was really you
+* 💬 Say **"Help"** — to go back to the main menu"""
 
         reply = build_forensic_details_message(
             preamble=forensic_preamble,
@@ -291,21 +360,23 @@ Here is the recorded login history for your account:
             payment_status_str = f"{fee} Settled (Fetch.ai Escrow)"
 
             if is_consumer_action:
-                consumer_verify_preamble = f"""## ✅ Your Account is Now Safe and Secured!
+                consumer_verify_preamble = f"""## ✅ All Done! Your Account is Secured.
 
-### 🛡️ Emergency Lockdown Summary:
-* **Protected Account:** `{target}`
-* **Intruder:** Disconnected & Locked Out
-* **Active Sessions:** 3 active tokens terminated (0 intruders remaining)
-* **Ingress IP Blocked:** `198.51.100.42` quarantined at perimeter
-* **Fetch.ai Payment Protocol:** `{fee} (~$0.12)` settled via decentralized escrow
-* **Cryptographic Proof (SHA-256):** `{audit_hash}`
+I've taken care of everything:
+
+* 🔒 **Intruder Removed:** The person logging in from Nigeria has been kicked out immediately.
+* 📱 **Devices Logged Out:** Your account was logged out everywhere so no unauthorized person has access.
+* 🚫 **Blocked Device:** The attacker's device (IP `198.51.100.42`) is blocked from trying again.
+* 💰 **Small Protection Fee:** `{fee}` settled safely through the Fetch.ai network.
+* 🧾 **Digital Safety Receipt:** `{audit_hash[:16]}...` (verified and recorded)
 
 ---
 
-### 💡 What you can do next:
-* 💬 Type **"Check my account"** — to run a fresh scan anytime
-* 💬 Type **"Help"** — to see other ways I can protect you"""
+### 💡 What you should do next:
+1. **Reset your password** from your own device right now just to be completely safe.
+2. Turn on **Two-Factor Authentication (2FA)** if you haven't already.
+
+💬 *Feel free to type **"Check my account"** anytime or tap **Help** if you need anything else!*"""
 
                 reply = build_consumer_safety_certificate_message(
                     preamble=consumer_verify_preamble,
@@ -432,50 +503,65 @@ Here is the recorded login history for your account:
         risk_score=result.get("risk_score", 50),
         evidence=result.get("evidence", []),
         mitre_tactics=result.get("mitre_tactics", []),
+        mode="consumer" if is_consumer_query else "soc",
     )
 
     # -----------------------------------------------------------------
     # BRANCH A: REAL-WORLD CONSUMER "EMERGENCY LOCK" FLOW
     # -----------------------------------------------------------------
     if is_consumer_query:
-        consumer_alert_preamble = f"""### 🚨 Account Security Alert: `{target}`
-Don't panic — SentinelFlow detected suspicious activity on your account.
+        if risk_score_val >= 50:
+            consumer_alert_preamble = f"""### 🚨 Heads Up! We Found a Suspicious Login on `{target}`
 
-* **Account:** `{target}`
-* **Intruder Location:** `Lagos, Nigeria`
-* **Intruder Device:** `Linux / Unauthorized Browser (198.51.100.42)`
-* **Threat Score:** **CRITICAL ({risk_score_val}/100)**
+Don't worry, we caught it in time! Here is what's going on:
+
+* 👤 **Account:** `{target}`
+* 📍 **Where the login came from:** **Lagos, Nigeria** (while your normal logins are from **San Francisco, USA**)
+* 💻 **Device:** Unknown Linux browser (`198.51.100.42`)
+* ⚠️ **What happened:** They tried guessing your password 5 times in 12 seconds before getting in.
+* 🚨 **Threat Level:** High Risk ({risk_score_val}/100)
 
 ---
 
-### 💡 What would you like to do? (Just type one of these):
-* 💬 Type **"Lock it"** (or tap the button below) — to immediately kick out the intruder (0.1 FET)
-* 💬 Type **"It was me"** — if that was just you using a VPN or traveling
-* 💬 Type **"Details"** — to see the full login history and IP address"""
+### 💡 How would you like to handle this?
+* 💬 Say **"Kick them out"** (or tap below) — to log them out of your account immediately (0.1 FET, ~$0.10)
+* 💬 Say **"It was me"** — if that was really you using a VPN or traveling
+* 💬 Say **"Details"** — to see the full list of recent logins"""
 
-        card_a_consumer = build_consumer_alert_message(
-            preamble=consumer_alert_preamble,
-            target=target,
-            risk_score=risk_score_val,
-            location="Lagos, Nigeria",
-            device="Linux / Unauthorized Browser",
-            summary=briefing,
-        )
-        await ctx.send(sender, card_a_consumer)
+            card_a_consumer = build_consumer_alert_message(
+                preamble=consumer_alert_preamble,
+                target=target,
+                risk_score=risk_score_val,
+                location="Lagos, Nigeria",
+                device="Linux / Unauthorized Browser",
+                summary=briefing,
+            )
+            await ctx.send(sender, card_a_consumer)
+            return
+        else:
+            consumer_safe_preamble = f"""### ✅ Good News! Your Account Looks Completely Safe: `{target}`
 
-        consumer_lockdown_preamble = f"""### 🛡️ 1-Tap Emergency Account Lockdown
-**Action:** Disconnect all active sessions for `{target}` and quarantine intruder IP.
-**Cost:** `0.1 FET (~$0.12)` (Fetch.ai Payment Protocol)
+I just finished scanning your recent logins, and everything looks completely normal:
 
-👉 **To execute:** Tap **Lock My Account Now** below or reply **"Lock it"**!"""
+* 👤 **Account:** `{target}`
+* 📍 **Location:** San Francisco, USA (your trusted location)
+* 🛡️ **Status:** Clean & Secure (Risk Score: {risk_score_val}/100)
+* 🔍 **Findings:** No unauthorized devices, no failed password bursts, and no suspicious activity found.
 
-        card_b_consumer = build_consumer_lockdown_message(
-            preamble=consumer_lockdown_preamble,
-            target=target,
-            fee="0.1 FET (~$0.12)",
-        )
-        await ctx.send(sender, card_b_consumer)
-        return
+---
+
+💡 *Your account is in great shape! You can ask me to check another account anytime, or type **"Help"**.*"""
+
+            card_safe_consumer = build_consumer_alert_message(
+                preamble=consumer_safe_preamble,
+                target=target,
+                risk_score=risk_score_val,
+                location="San Francisco, USA",
+                device="Mac / Chrome (Trusted)",
+                summary=briefing,
+            )
+            await ctx.send(sender, card_safe_consumer)
+            return
 
     # -----------------------------------------------------------------
     # BRANCH B: ENTERPRISE TIER-3 SOC ANALYST FLOW
