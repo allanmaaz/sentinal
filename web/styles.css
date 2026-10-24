@@ -1110,6 +1110,86 @@ body {
   50% { opacity: 0.4; transform: scale(0.85); }
 }
 
+/* Guided Demo Banner Toast */
+.btn-demo-nav {
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid var(--border-glow);
+  color: var(--accent-cyan);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all var(--transition-fast);
+}
+
+.btn-demo-nav:hover {
+  background: var(--accent-cyan);
+  color: var(--bg-dark);
+}
+
+.demo-guide-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid var(--accent-cyan);
+  box-shadow: 0 10px 30px rgba(0, 240, 255, 0.25);
+  border-radius: 12px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+  backdrop-filter: blur(12px);
+  animation: fadeIn 0.3s ease;
+}
+
+.demo-guide-toast.hidden {
+  display: none !important;
+}
+
+.demo-guide-step {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #070B14;
+  background: var(--accent-cyan);
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.demo-guide-text {
+  font-size: 0.95rem;
+  color: var(--text-white);
+  font-weight: 500;
+  max-width: 650px;
+}
+
+.demo-guide-stop {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: var(--text-muted);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.demo-guide-stop:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: var(--accent-red);
+}
+
 /* Responsive */
 @media (max-width: 860px) {
   .hero-title { font-size: 2.2rem; }
@@ -1118,4 +1198,5 @@ body {
   .chat-presets { border-right: none; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px; }
   .cert-grid { grid-template-columns: 1fr 1fr; }
   .swarm-pipeline { overflow-x: auto; }
+  .demo-guide-toast { width: 90%; left: 5%; transform: none; bottom: 16px; }
 }

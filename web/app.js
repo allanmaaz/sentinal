@@ -360,4 +360,129 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     return "### SentinelFlow Status\n\nI am online and monitoring your logins 24/7. Ask me to scan an account, kick out an intruder, or explain our pricing.";
   }
+
+  // 5. Auto-Play Guided Demo Controller
+  const btnStartDemo = document.getElementById('btn-start-autodemo');
+  const navBtnDemo = document.getElementById('nav-btn-autodemo');
+  const demoToast = document.getElementById('demo-guide-toast');
+  const demoStep = document.getElementById('demo-guide-step');
+  const demoText = document.getElementById('demo-guide-text');
+  const demoStop = document.getElementById('demo-guide-stop');
+
+  let isDemoRunning = false;
+  let demoTimeouts = [];
+
+  function stopDemo() {
+    isDemoRunning = false;
+    demoTimeouts.forEach(t => clearTimeout(t));
+    demoTimeouts = [];
+    if (demoToast) demoToast.classList.add('hidden');
+    if (btnStartDemo) btnStartDemo.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Play Auto-Demo`;
+  }
+
+  function setDemoTimeout(fn, ms) {
+    const t = setTimeout(fn, ms);
+    demoTimeouts.push(t);
+    return t;
+  }
+
+  function updateDemoUI(step, text) {
+    if (demoStep) demoStep.textContent = step;
+    if (demoText) demoText.textContent = text;
+  }
+
+  async function startGuidedDemo() {
+    if (isDemoRunning) {
+      stopDemo();
+      return;
+    }
+
+    isDemoRunning = true;
+    demoTimeouts.forEach(t => clearTimeout(t));
+    demoTimeouts = [];
+
+    if (btnStartDemo) {
+      btnStartDemo.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Stop Demo`;
+    }
+    if (demoToast) demoToast.classList.remove('hidden');
+
+    // Stage 1: Scroll to Console & Ingest Suspicious Intruder
+    updateDemoUI('STEP 1/4', 'Simulating Intruder Login from Lagos, Nigeria on alex@gmail.com...');
+    const consoleEl = document.getElementById('console');
+    if (consoleEl) consoleEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    accountBtns.forEach(b => b.classList.remove('active'));
+    const alexBtn = Array.from(accountBtns).find(b => b.dataset.target === 'alex@gmail.com');
+    if (alexBtn) alexBtn.classList.add('active');
+    targetInput.value = 'alex@gmail.com';
+
+    setDemoTimeout(() => {
+      if (!isDemoRunning) return;
+      // Trigger live scan
+      runInvestigation('alex@gmail.com');
+
+      // Stage 2: Highlight Threat Score & 1-Tap Severance
+      setDemoTimeout(() => {
+        if (!isDemoRunning) return;
+        updateDemoUI('STEP 2/4', 'Threat Correlated in <500ms (Score: 94/100). Executing 1-Tap Severance (0.1 FET)...');
+
+        setDemoTimeout(() => {
+          if (!isDemoRunning) return;
+          // Trigger Containment
+          btnContainAction.click();
+
+          // Stage 3: Cryptographic Proof Verification
+          setDemoTimeout(() => {
+            if (!isDemoRunning) return;
+            updateDemoUI('STEP 3/4', 'Attacker Evicted in 1s! 0 Active Sessions. SHA-256 Safety Proof Issued.');
+
+            // Stage 4: Scroll to Agent Chat
+            setDemoTimeout(async () => {
+              if (!isDemoRunning) return;
+              updateDemoUI('STEP 4/4', 'Conversational SecOps in ASI:One via Agent Chat Protocol (ACP)...');
+              const chatEl = document.getElementById('chat');
+              if (chatEl) chatEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+              // Simulate typing into chat
+              const query = 'Investigate alex@gmail.com';
+              chatInput.value = '';
+              for (let i = 0; i < query.length; i++) {
+                if (!isDemoRunning) return;
+                chatInput.value += query[i];
+                await new Promise(r => setTimeout(r, 45));
+              }
+
+              setDemoTimeout(() => {
+                if (!isDemoRunning) return;
+                sendChatMessage(query);
+                chatInput.value = '';
+
+                // Completion
+                setDemoTimeout(() => {
+                  if (!isDemoRunning) return;
+                  updateDemoUI('COMPLETE', 'Demo Finished — 24/7 Autonomous Account Defense on Fetch.ai.');
+                  setDemoTimeout(stopDemo, 4500);
+                }, 3500);
+              }, 400);
+            }, 3000);
+          }, 1200);
+        }, 2200);
+      }, 1200);
+    }, 1000);
+  }
+
+  if (btnStartDemo) btnStartDemo.addEventListener('click', startGuidedDemo);
+  if (navBtnDemo) navBtnDemo.addEventListener('click', startGuidedDemo);
+  if (demoStop) demoStop.addEventListener('click', stopDemo);
+
+  // Keyboard shortcut: Press 'D' outside of inputs to toggle demo
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'd' || e.key === 'D') {
+      const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      if (tag !== 'input' && tag !== 'textarea') {
+        startGuidedDemo();
+      }
+    }
+  });
 });
+
