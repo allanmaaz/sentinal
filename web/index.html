@@ -15,51 +15,24 @@
 </head>
 <body>
 
-  <!-- Top Announcement Bar -->
-  <aside class="top-bar">
-    <div class="top-bar-inner">
-      <span class="status-pill">
-        <span class="pulse-dot"></span>
-        FETCH.AI MAINNET SWARM
-      </span>
-      <span class="top-bar-text">Live 5-agent security swarm connected to Agentverse Mailbox</span>
-      <span class="top-bar-cost">
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" class="svg-icon">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-        </svg>
-        0.1 FET ($0.10) / rescue
-      </span>
-    </div>
-  </aside>
-
   <!-- Navbar -->
   <header class="navbar">
     <div class="nav-container">
-      <div class="brand">
+      <a href="#" class="brand">
         <div class="brand-logo">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             <path d="M9 12l2 2 4-4"/>
           </svg>
         </div>
-        <div class="brand-title">
-          <span class="brand-name">Sentinel<span>Flow</span></span>
-          <span class="brand-sub">Autonomous Account Defense</span>
-        </div>
-      </div>
+        <span class="brand-name">Sentinel<span>Flow</span></span>
+      </a>
 
-      <div class="nav-links">
-        <a href="#console" class="nav-link">Live Console</a>
+      <nav class="nav-links">
+        <a href="#console" class="nav-link">Console</a>
         <a href="#how-it-works" class="nav-link">How It Works</a>
-        <a href="#chat" class="nav-link">Ask the Agent</a>
-      </div>
-
-      <div class="nav-status">
-        <div class="live-indicator">
-          <span class="dot-online"></span>
-          <span class="live-text">Daemon: Live (Port 8000)</span>
-        </div>
-      </div>
+        <a href="#chat" class="nav-link">Agent Chat</a>
+      </nav>
     </div>
   </header>
 
@@ -68,13 +41,6 @@
     <!-- Hero Section -->
     <section class="hero-section">
       <div class="hero-content">
-        <div class="hero-badge">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" class="svg-icon text-cyan">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-          </svg>
-          Sub-Second Incident Containment for Everyday People
-        </div>
-
         <h1 class="hero-title">
           Kick Hackers Out of Your Account <br>
           <span class="gradient-text">In 1 Second for 10 Cents.</span>
@@ -82,51 +48,8 @@
 
         <p class="hero-desc">
           When an intruder breaks into your email or account at 2 AM, customer support takes <strong>48 hours</strong> to answer. 
-          <strong>SentinelFlow</strong> detects brute force logins, logs the hacker out of every phone and laptop with 1 tap, and gives you a cryptographic SHA-256 safety receipt.
+          SentinelFlow detects brute-force logins, logs the hacker out of every phone and laptop with 1 tap, and gives you a cryptographic SHA-256 safety receipt.
         </p>
-
-        <!-- 3 Quick Value Highlights -->
-        <div class="hero-stats">
-          <div class="stat-pill">
-            <div class="stat-icon-wrap text-cyan">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-            </div>
-            <div class="stat-info">
-              <strong>1 Second</strong>
-              <span>Response Time</span>
-            </div>
-          </div>
-
-          <div class="stat-pill">
-            <div class="stat-icon-wrap text-yellow">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
-                <rect x="2" y="6" width="20" height="12" rx="2"/>
-                <circle cx="12" cy="12" r="2"/>
-                <path d="M6 12h.01M18 12h.01"/>
-              </svg>
-            </div>
-            <div class="stat-info">
-              <strong>0.1 FET (~$0.10)</strong>
-              <span>Pay-Per-Rescue</span>
-            </div>
-          </div>
-
-          <div class="stat-pill">
-            <div class="stat-icon-wrap text-green">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <path d="M9 12l2 2 4-4"/>
-              </svg>
-            </div>
-            <div class="stat-info">
-              <strong>SHA-256</strong>
-              <span>Tamper-Proof Proof</span>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -145,35 +68,32 @@
               </div>
               <div>
                 <h2>Live Incident Defense Console</h2>
-                <p>Test real security investigations powered by Fetch.ai uAgents and real Python engine</p>
+                <p>Run real security investigations powered by Fetch.ai uAgents and Python backend</p>
               </div>
             </div>
-            <div class="console-status" id="console-status-badge">
+            <div class="console-status-clean">
               <span class="status-dot"></span>
-              <span id="telemetry-text">SWARM: READY</span>
+              <span id="telemetry-text">Swarm Ready</span>
             </div>
           </div>
 
-          <!-- Account Selector Pills -->
+          <!-- Account Selector -->
           <div class="account-selector">
-            <span class="selector-label">Test Account:</span>
+            <span class="selector-label">Target Account:</span>
             <div class="preset-buttons">
               <button class="account-btn active" data-target="alex@gmail.com">
                 <span class="account-dot dot-critical"></span>
-                <span>alex@gmail.com</span>
-                <span class="account-tag tag-critical">Intruder Active</span>
+                <span>alex@gmail.com (Hacked)</span>
               </button>
 
               <button class="account-btn" data-target="demo-user-104">
                 <span class="account-dot dot-warning"></span>
-                <span>demo-user-104</span>
-                <span class="account-tag tag-warning">Brute Force</span>
+                <span>demo-user-104 (Attacked)</span>
               </button>
 
               <button class="account-btn" data-target="sarah-dev-92">
                 <span class="account-dot dot-safe"></span>
-                <span>sarah-dev-92</span>
-                <span class="account-tag tag-safe">Safe Baseline</span>
+                <span>sarah-dev-92 (Safe)</span>
               </button>
             </div>
           </div>
@@ -262,7 +182,7 @@
             <!-- State 1: Standby -->
             <div class="stage-box" id="box-standby">
               <div class="standby-icon">
-                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.8" class="text-cyan">
+                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.8" class="text-cyan">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                   <circle cx="12" cy="11" r="3"/>
                 </svg>
@@ -282,10 +202,7 @@
                   </svg>
                 </div>
                 <div class="alert-text">
-                  <div class="badge-row">
-                    <span class="badge" id="risk-score-badge">CRITICAL RISK: 100/100</span>
-                    <span class="badge badge-dark">MITRE ATT&CK Correlated</span>
-                  </div>
+                  <div class="threat-level-text" id="risk-score-badge">CRITICAL RISK: 100/100</div>
                   <h3 id="threat-title">Unauthorized Intrusion Detected on alex@gmail.com</h3>
                 </div>
               </div>
@@ -320,14 +237,14 @@
             <div class="stage-box hidden" id="box-verified">
               <div class="verified-header">
                 <div class="verified-icon">
-                  <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" class="text-green">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" class="text-green">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                     <polyline points="9 12 11 14 15 10"/>
                   </svg>
                 </div>
                 <div>
-                  <div class="badge badge-verified">CONTAINMENT VERIFIED</div>
-                  <h3>Intruder Evicted & Account Successfully Secured</h3>
+                  <div class="verified-tag">CONTAINMENT VERIFIED</div>
+                  <h3>Intruder Evicted & Account Secured</h3>
                   <p>All active sessions terminated. Attacker IP quarantined at firewall.</p>
                 </div>
               </div>
@@ -394,7 +311,6 @@
     <section class="how-section" id="how-it-works">
       <div class="section-container">
         <div class="section-header">
-          <span class="section-tag">DEAD SIMPLE DEFENSE</span>
           <h2>How SentinelFlow Protects You in 3 Steps</h2>
           <p>No cybersecurity knowledge needed. Talk in plain English and let autonomous agents handle the rest.</p>
         </div>
@@ -404,42 +320,39 @@
           <div class="step-card">
             <div class="step-num">01</div>
             <div class="card-icon text-cyan">
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"/>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
             </div>
             <h3>Spot Password Thieves</h3>
             <p>Our Investigator Agent monitors your login records in real time. If someone in another country guesses your password, we catch them in milliseconds.</p>
-            <span class="card-badge badge-free">100% Free Scans</span>
           </div>
 
           <!-- Step 2 -->
           <div class="step-card">
             <div class="step-num">02</div>
             <div class="card-icon text-yellow">
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
               </svg>
             </div>
             <h3>Kick Them Out in 1 Tap</h3>
-            <p>Hit the button or reply "Kick them out". Our Containment Agent instantly terminates all attacker sessions everywhere and blocks their laptop or phone.</p>
-            <span class="card-badge badge-paid">0.1 FET (~$0.10)</span>
+            <p>Hit the button or reply "Kick them out". Our Containment Agent instantly terminates all attacker sessions everywhere and blocks their laptop or phone (0.1 FET).</p>
           </div>
 
           <!-- Step 3 -->
           <div class="step-card">
             <div class="step-num">03</div>
             <div class="card-icon text-green">
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 <polyline points="9 12 11 14 15 10"/>
               </svg>
             </div>
             <h3>Get Cryptographic Proof</h3>
             <p>Our Auditor Agent inspects the system to prove 0 sessions remain, computing a SHA-256 digital certificate you can send to banks or insurers.</p>
-            <span class="card-badge badge-free">Verified On-Chain</span>
           </div>
         </div>
       </div>
@@ -449,9 +362,8 @@
     <section class="chat-section" id="chat">
       <div class="section-container">
         <div class="section-header">
-          <span class="section-tag">NATURAL LANGUAGE SecOps</span>
-          <h2>Talk to SentinelFlow Like a Real Person</h2>
-          <p>No security jargon required. Ask any question or tap one of the suggested prompts below.</p>
+          <h2>Talk to SentinelFlow in Plain English</h2>
+          <p>No security jargon required. Ask any question or click a prompt below.</p>
         </div>
 
         <div class="chat-layout">
@@ -513,7 +425,6 @@
                 <strong>SentinelFlow SecOps Coordinator</strong>
                 <span>agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy</span>
               </div>
-              <span class="agent-status-tag">Connected</span>
             </div>
 
             <div class="chat-body" id="chat-messages">
@@ -548,7 +459,7 @@
 
   </main>
 
-  <!-- Clean Footer -->
+  <!-- Clean Minimal Footer -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-left">
@@ -558,9 +469,7 @@
       <div class="footer-right">
         <span>Fetch.ai Hackathon 2026</span>
         <span>•</span>
-        <span>Agentverse Mailbox: Live</span>
-        <span>•</span>
-        <span>26/26 Tests Passing</span>
+        <span>Agentverse Connected</span>
       </div>
     </div>
   </footer>

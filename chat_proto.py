@@ -35,6 +35,7 @@ from cards import (
     build_forensic_details_message,
     build_response_approval_message,
     build_risk_assessment_message,
+    build_summary_report_message,
     build_verification_message,
     build_welcome_message,
 )
@@ -124,6 +125,17 @@ def parse_card_selection(text: str) -> dict[str, Any] | None:
 
     if any(kw in lower for kw in ("system status", "agent status", "benchmark status", "benchmark info", "diagnostics")) or lower in ("status", "health"):
         return {"action": "system_status"}
+
+    # --- Summary Report / Incident Overview (Read-Only Free Telemetry) ---
+    if any(kw in lower for kw in (
+        "summary report", "generate a summary", "generate summary", "summary of all",
+        "report of all", "high-risk", "high risk", "incident report", "generate a report",
+        "generate report", "security report", "threat report", "overview of incidents",
+        "all incidents", "findings report", "triage report", "summary of high-risk",
+        "report of high-risk", "high-risk authentication", "all high-risk"
+    )):
+        target_found = extract_target_from_text(clean_text)
+        return {"action": "summary_report", "target": target_found}
 
     # --- Priority 2: Login History / Forensics / Audit Review ---
     if any(kw in lower for kw in ("login history", "who accessed", "access history", "history of logins", "show logs", "show my logins", "show logins", "raw logs", "more info", "request more info", "forensic", "deep-dive")):
@@ -469,6 +481,99 @@ I've cleared the alert and made a note that this login was really you. No change
         await ctx.send(sender, reply)
         return
 
+    # Handle Summary Report / Executive Incident Overview (Read-Only Free Telemetry)
+    if action_name == "summary_report":
+        ctx.logger.info("Generating read-only incident summary report of all high-risk authentication events.")
+        summary_preamble = """## 🛡️ SentinelFlow Incident Summary Report: High-Risk Authentication Events
+
+* **Report Type:** Read-Only Telemetry Scan & MITRE ATT&CK Correlation
+* **Service Tier:** Free Automated Telemetry Analysis (0.0 FET)
+* **Monitoring Window:** Past 60 Minutes
+* **Total Accounts Analyzed:** 3 | **High-Risk Incidents Detected:** 2
+
+---
+
+### 🚨 Incident 1: `alex@gmail.com`
+* **Risk Score:** 100/100 (CRITICAL RISK)
+* **Timestamp:** Within last 60 minutes
+* **Attacker Origin:** Lagos, Nigeria (IP `198.51.100.42`)
+* **Baseline Location:** San Francisco, USA
+* **Observed MITRE ATT&CK Techniques:**
+  - `T1110` — Brute Force (5 consecutive failed login attempts within 50 seconds)
+  - `T1078` — Valid Accounts (Compromised password accepted immediately following brute-force burst)
+  - `T1068` — Exploitation for Privilege Escalation
+  - `T1556` — Modify Authentication Process (`mfa_bypass_attempt` targeting `/api/v1/auth/mfa/bypass`)
+  - `T1078.004` — Cloud Administration / External Identity Anomaly (Impossible travel: 6,000+ miles)
+* **Telemetry Findings:** Attacker compromised credentials and actively probed the multi-factor authentication bypass endpoint.
+
+---
+
+### 🚨 Incident 2: `demo-user-104`
+* **Risk Score:** 100/100 (CRITICAL RISK)
+* **Timestamp:** Within last 60 minutes
+* **Attacker Origin:** Bucharest, Romania (IP `198.51.100.42`)
+* **Baseline Location:** San Francisco, USA
+* **Observed MITRE ATT&CK Techniques:**
+  - `T1110` — Brute Force (Credential stuffing burst: 7 failed login attempts within 2 minutes)
+  - `T1078` — Valid Accounts (Credentials compromised post-brute-force)
+  - `T1068` — Exploitation for Privilege Escalation (Unauthorized query against `/api/v1/admin/privileges`)
+* **Telemetry Findings:** High-velocity dictionary attack successfully accessed account and attempted administrative privilege escalation.
+
+---
+
+### ✅ Incident 3: `sarah-dev-92` (Baseline Control)
+* **Risk Score:** 0/100 (SAFE)
+* **Origin:** Austin, Texas (IP `192.0.2.88`)
+* **Observed MITRE ATT&CK Techniques:** `None (Baseline Conformance)`
+* **Telemetry Findings:** Corporate Okta SSO verified; hardware FIDO2 authentication successful.
+
+---
+
+### ⚡ Threat Analyst Recommended Next Steps:
+1. **Zero-Trust Session Severance:** Invalidate all active OAuth 2.0 refresh tokens, JWTs, and web session cookies for `alex@gmail.com` and `demo-user-104`.
+2. **Network Perimeter Quarantine:** Add attacker IP `198.51.100.42` to active firewall blocking tables to prevent re-connection attempts.
+3. **Mandatory Credential Reset & MFA:** Enforce immediate password rotations and require hardware-backed FIDO2 multi-factor tokens.
+4. **Endpoint Audit:** Review web server access logs for requests targeting `/api/v1/auth/mfa/bypass` and `/api/v1/admin/privileges`.
+
+---
+💡 *Telemetry scanning and report generation are 100% Free. To execute automated session revocation and obtain a cryptographic SHA-256 safety certificate, reply **"Kick them out"** (0.1 FET).*"""
+
+        incidents_data = [
+            {
+                "account": "alex@gmail.com",
+                "risk": "100/100 (CRITICAL)",
+                "origin": "Lagos, Nigeria (198.51.100.42)",
+                "mitre": ["T1110 (Brute Force)", "T1078 (Valid Accounts)", "T1556 (MFA Bypass)", "T1068 (Privilege Escalation)"],
+            },
+            {
+                "account": "demo-user-104",
+                "risk": "100/100 (CRITICAL)",
+                "origin": "Bucharest, Romania (198.51.100.42)",
+                "mitre": ["T1110 (Credential Stuffing)", "T1078 (Valid Accounts)", "T1068 (Privilege Escalation)"],
+            },
+            {
+                "account": "sarah-dev-92",
+                "risk": "0/100 (SAFE)",
+                "origin": "Austin, Texas (192.0.2.88)",
+                "mitre": ["None (Normal Baseline)"],
+            },
+        ]
+
+        steps_data = [
+            "1. Invalidate active sessions & OAuth refresh tokens for compromised identities.",
+            "2. Quarantine attacker IP 198.51.100.42 at active firewall perimeter.",
+            "3. Enforce mandatory hardware-backed MFA (FIDO2) across all accounts.",
+            "4. Audit API gateway logs for unauthorized calls to /api/v1/auth/mfa/bypass.",
+        ]
+
+        reply = build_summary_report_message(
+            preamble=summary_preamble,
+            incidents=incidents_data,
+            recommended_steps=steps_data,
+        )
+        await ctx.send(sender, reply)
+        return
+
     # Handle Request More Information (Card D: Forensics)
     if action_name == "request_more_info":
         target = str(parsed_intent.get("target") or "demo-user-104")
@@ -804,22 +909,26 @@ Review **Card A (Risk Assessment)** and **Card B (Response Approval)** below to 
     )
     await ctx.send(sender, card_a_msg)
 
-    # 2. Send Card B: Response Approval Card
-    card_b_preamble = f"""### 🛡️ SentinelFlow Remediation Authorization Gate
+    # 2. Only propose Card B (Response Approval Card) if user explicitly requested containment/remediation
+    is_containment_requested = any(w in inbound_text.lower() for w in (
+        "contain", "remediate", "lock", "revoke", "kick out", "sever", "quarantine", "block", "approve", "authorize"
+    ))
+    if is_containment_requested:
+        card_b_preamble = f"""### 🛡️ SentinelFlow Remediation Authorization Gate
 **Action Proposed:** Invalidate active OAuth & JWT sessions for `{target}`.
 **SECaaS Settlement Fee:** `0.1 FET` (Fetch.ai Payment Protocol)
 
 Review the impact in **Card B (Response Approval)** below and choose your decision:"""
 
-    card_b_msg = build_response_approval_message(
-        preamble=card_b_preamble,
-        target=target,
-        risk_level=result.get("risk_level", "critical"),
-        proposed_action="revoke_user_sessions",
-        malicious_ip="198.51.100.42",
-        fee="0.1 FET",
-    )
-    await ctx.send(sender, card_b_msg)
+        card_b_msg = build_response_approval_message(
+            preamble=card_b_preamble,
+            target=target,
+            risk_level=result.get("risk_level", "critical"),
+            proposed_action="revoke_user_sessions",
+            malicious_ip="198.51.100.42",
+            fee="0.1 FET",
+        )
+        await ctx.send(sender, card_b_msg)
 
 
 @chat_proto.on_message(model=ChatAcknowledgement)

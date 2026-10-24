@@ -196,6 +196,16 @@ def test_t13_consumer_emergency_lock_and_email_flow():
     assert safe_click is not None
     assert safe_click["action"] == "it_was_me"
 
+    # 6. Informational Summary Report Card builder
+    from cards import build_summary_report_card, build_summary_report_message
+    summary_card = build_summary_report_card()
+    assert "root" in summary_card
+    assert any("High-Risk" in str(ch.get("value", "")) for ch in summary_card["root"]["children"])
+
+    summary_msg = build_summary_report_message("Incident summary")
+    assert summary_msg.content[1].metadata["card_kind"] == "custom"
+
+
 
 def test_t14_conversational_human_parsing_and_agent_mention_stripping():
     """T14: Validate conversational human dialogue, agent address mention stripping, and 1-4 numeric shortcuts."""
@@ -275,6 +285,13 @@ def test_t15_agentverse_benchmark_evaluations():
     res5 = parse_card_selection(p5)
     assert res5 is not None
     assert res5["action"] == "sha256_explanation"
+
+    # Benchmark Prompt 6: High-risk summary report request
+    p6 = "Generate a summary report of all high-risk authentication events"
+    res6 = parse_card_selection(p6)
+    assert res6 is not None
+    assert res6["action"] == "summary_report"
+
 
 
 

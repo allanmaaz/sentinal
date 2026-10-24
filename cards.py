@@ -1087,3 +1087,122 @@ def build_consumer_safety_certificate_message(
         ],
     )
 
+
+def build_summary_report_card(
+    title: str = "High-Risk Incident Summary Report",
+    incidents: list[dict[str, Any]] | None = None,
+    recommended_steps: list[str] | None = None,
+) -> dict[str, Any]:
+    """Informational Element-Tree Card displaying High-Risk Incident Summary with MITRE techniques."""
+    incidents_list = incidents or [
+        {
+            "account": "alex@gmail.com",
+            "risk": "100/100 (CRITICAL)",
+            "origin": "Lagos, Nigeria (198.51.100.42)",
+            "mitre": ["T1110 (Brute Force)", "T1078 (Valid Accounts)", "T1556 (MFA Bypass)"],
+        },
+        {
+            "account": "demo-user-104",
+            "risk": "100/100 (CRITICAL)",
+            "origin": "Bucharest, Romania (198.51.100.42)",
+            "mitre": ["T1110 (Credential Stuffing)", "T1068 (Privilege Escalation)"],
+        },
+    ]
+
+    steps = recommended_steps or [
+        "1. Invalidate active sessions & OAuth refresh tokens for compromised identities.",
+        "2. Quarantine attacker IP 198.51.100.42 at active firewall perimeter.",
+        "3. Enforce mandatory hardware-backed MFA (FIDO2) across all accounts.",
+    ]
+
+    card_children = [
+        {
+            "type": "heading",
+            "value": title,
+            "level": 3,
+        },
+        {
+            "type": "group",
+            "direction": "row",
+            "gap": 8,
+            "children": [
+                {"type": "badge", "label": "TELEMETRY SCAN: FREE", "variant": "info"},
+                {"type": "badge", "label": "EVALUATION: PAST 60 MIN", "variant": "default"},
+                {"type": "badge", "label": "HIGH-RISK DETECTED: 2", "variant": "error"},
+            ],
+        },
+        {"type": "divider"},
+        {"type": "heading", "value": "Correlated High-Risk Incidents", "level": 4},
+    ]
+
+    for inc in incidents_list:
+        card_children.append({
+            "type": "section",
+            "title": f"Incident: {inc['account']} — {inc['risk']}",
+            "children": [
+                {"type": "text", "value": f"Origin: {inc['origin']}", "style": "body"},
+                {"type": "text", "value": f"MITRE ATT&CK: {', '.join(inc['mitre'])}", "style": "body"},
+            ],
+        })
+
+    card_children.append({"type": "divider"})
+    card_children.append({"type": "heading", "value": "Threat Analyst Recommended Next Steps", "level": 4})
+    for st in steps:
+        card_children.append({"type": "text", "value": st, "style": "body"})
+
+    card_children.append({"type": "divider"})
+    card_children.append({
+        "type": "group",
+        "direction": "row",
+        "gap": 8,
+        "children": [
+            {
+                "type": "button",
+                "label": "🔍 Scan Another Target",
+                "primary": True,
+                "action": {
+                    "selection": {
+                        "action": "investigate_target",
+                        "target": "demo-user-104",
+                        "mode": "consumer",
+                        "source": SENTINELFLOW_SOURCE,
+                    }
+                },
+            },
+            {
+                "type": "button",
+                "label": "🏠 Main Menu",
+                "primary": False,
+                "action": {
+                    "selection": {
+                        "action": "welcome",
+                        "source": SENTINELFLOW_SOURCE,
+                    }
+                },
+            },
+        ],
+    })
+
+    return {"root": {"type": "section", "children": card_children}}
+
+
+def build_summary_report_message(
+    preamble: str,
+    incidents: list[dict[str, Any]] | None = None,
+    recommended_steps: list[str] | None = None,
+) -> ChatMessage:
+    """Create ChatMessage with text preamble and Informational Summary Report Card."""
+    card_dict = build_summary_report_card(
+        incidents=incidents,
+        recommended_steps=recommended_steps,
+    )
+    return ChatMessage(
+        timestamp=datetime.now(timezone.utc),
+        msg_id=uuid4(),
+        content=[
+            TextContent(type="text", text=preamble),
+            _card_metadata(card_dict, card_kind="custom"),
+        ],
+    )
+
+
