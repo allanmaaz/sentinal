@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SentinelFlow Presentation — Autonomous SecOps Swarm on Fetch.ai</title>
+  
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #070B14;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 240, 255, 0.3);
+      --accent-cyan: #00F0FF;
+      --accent-blue: #3B82F6;
+      --accent-green: #10B981;
+      --accent-red: #EF4444;
+      --accent-yellow: #F59E0B;
+      --text-white: #FFFFFF;
+      --text-muted: #94A3B8;
+      --font-sans: 'Inter', sans-serif;
+      --font-heading: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+
+    /* Top Controls Bar */
+    .deck-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(7, 11, 20, 0.95);
+      z-index: 100;
+    }
+
+    .deck-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-white);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .deck-brand span { color: var(--accent-cyan); }
+
+    .deck-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-deck {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-deck:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--text-white);
+    }
+
+    .btn-deck.btn-cyan {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--border-glow);
+      color: var(--accent-cyan);
+    }
+
+    .btn-deck.btn-cyan:hover {
+      background: rgba(0, 240, 255, 0.25);
+    }
+
+    /* Slide Arena */
+    .deck-viewport {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      background: radial-gradient(circle at 50% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      max-width: 1200px;
+      height: 640px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 50px 60px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: scale(0.96) translateX(40px);
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1) translateX(0);
+      pointer-events: auto;
+    }
+
+    /* Slide Header */
+    .slide-tag {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-white);
+      letter-spacing: -0.02em;
+      margin-bottom: 30px;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Slide 1: Title Slide Layout */
+    .title-slide-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      border-left: 4px solid var(--accent-cyan);
+      padding-left: 36px;
+    }
+
+    .title-event {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--accent-cyan);
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .title-main {
+      font-family: var(--font-heading);
+      font-size: 3.8rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .title-main span {
+      color: var(--accent-cyan);
+    }
+
+    .title-sub {
+      font-size: 1.35rem;
+      color: var(--text-muted);
+      max-width: 780px;
+      line-height: 1.5;
+      margin-bottom: 36px;
+    }
+
+    .title-team {
+      font-size: 0.95rem;
+      color: #CBD5E1;
+      display: flex;
+      gap: 20px;
+    }
+
+    /* Grid Layouts for Content Slides */
+    .grid-4-cols {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .grid-3-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .content-box {
+      background: rgba(7, 11, 20, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-box.border-red { border-color: rgba(239, 68, 68, 0.4); }
+    .content-box.border-yellow { border-color: rgba(245, 158, 11, 0.4); }
+    .content-box.border-cyan { border-color: rgba(0, 240, 255, 0.4); }
+    .content-box.border-green { border-color: rgba(16, 185, 129, 0.4); }
+
+    .box-num {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .box-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 6px;
+    }
+
+    .box-subtitle {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .box-desc {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .box-stat {
+      margin-top: auto;
+      padding-top: 18px;
+    }
+
+    .stat-val {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 800;
+      display: block;
+    }
+
+    .stat-lbl {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Comparison Table Layout */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .compare-table th {
+      background: rgba(13, 20, 36, 0.9);
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-white);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .compare-table th.col-highlight {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--accent-cyan);
+      border-bottom-color: var(--accent-cyan);
+    }
+
+    .compare-table td {
+      padding: 16px 20px;
+      font-size: 0.92rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(7, 11, 20, 0.6);
+      color: var(--text-muted);
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+
+    .compare-table td.col-highlight {
+      background: rgba(0, 240, 255, 0.05);
+      color: var(--accent-cyan);
+      font-weight: 600;
+    }
+
+    .compare-table td.row-label {
+      color: var(--text-white);
+      font-weight: 600;
+    }
+
+    /* Agent Swarm List */
+    .swarm-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .swarm-item {
+      background: rgba(7, 11, 20, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .swarm-info h4 {
+      font-size: 1.05rem;
+      color: var(--text-white);
+      margin-bottom: 2px;
+    }
+
+    .swarm-info p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .swarm-role {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--accent-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    /* Bottom Navigation Controls */
+    .deck-bottombar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      border-top: 1px solid var(--border-subtle);
+      background: rgba(7, 11, 20, 0.95);
+      z-index: 100;
+    }
+
+    .deck-counter {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .deck-counter strong { color: var(--accent-cyan); }
+
+    .deck-nav-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-arrow-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-arrow-btn:hover {
+      background: var(--accent-cyan);
+      color: #070B14;
+      border-color: var(--accent-cyan);
+    }
+
+    .keyboard-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .keyboard-hint kbd {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="deck-topbar">
+    <a href="/" class="deck-brand">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" class="text-cyan">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M9 12l2 2 4-4"/>
+      </svg>
+      Sentinel<span>Flow</span> Deck
+    </a>
+
+    <div class="deck-actions">
+      <a href="/SentinelFlow_Presentation.pptx" download class="btn-deck btn-cyan" id="btn-download-pptx">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download .PPTX
+      </a>
+      <button class="btn-deck" id="btn-fullscreen">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
+        Fullscreen (F)
+      </button>
+      <a href="/" class="btn-deck">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Back to Console
+      </a>
+    </div>
+  </header>
+
+  <!-- Slide Viewport -->
+  <main class="deck-viewport" id="viewport">
+
+    <!-- SLIDE 1: Title -->
+    <div class="slide active" data-slide="1">
+      <div class="title-slide-wrap">
+        <div class="title-event">FETCH.AI & ASI:ONE INNOVATION HACKATHON 2026</div>
+        <h1 class="title-main">Sentinel<span>Flow</span></h1>
+        <p class="title-sub">The 24/7 Autonomous AI Bodyguard for Everyday Accounts. Detects unauthorized logins, kicks intruders out in 1 second for 10 cents, and issues cryptographic SHA-256 proof.</p>
+        <div class="title-team">
+          <span><strong>Team F-ups:</strong> Meer Mohammed Shoaib • Mohammed Maaz • Prithvi S</span>
+          <span>•</span>
+          <span style="color:var(--accent-cyan);">Native Fetch.ai uAgents Bureau</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Problem Statement -->
+    <div class="slide" data-slide="2">
+      <div class="slide-tag">1. Problem Statement</div>
+      <h2 class="slide-title">The "Panic Window" — Why Account Takeovers Are Devastating</h2>
+      <div class="slide-body">
+        <div class="grid-4-cols">
+          <div class="content-box border-red">
+            <div class="box-num text-red">01</div>
+            <div class="box-title">2:00 AM Crisis</div>
+            <div class="box-subtitle text-red">Immediate Panic</div>
+            <p class="box-desc">A user receives an alert: 'Login from Lagos, Nigeria'. The victim is asleep or helpless while attackers guess passwords and bypass 2FA.</p>
+          </div>
+
+          <div class="content-box border-yellow">
+            <div class="box-num text-yellow">02</div>
+            <div class="box-title">48-Hour Delay</div>
+            <div class="box-subtitle text-yellow">Support Black Hole</div>
+            <p class="box-desc">Support takes 24–48 hours to answer an urgent ticket. By the time human support reads the email, the intruder has total account access.</p>
+          </div>
+
+          <div class="content-box border-red">
+            <div class="box-num text-red">03</div>
+            <div class="box-title">Irreversible Loss</div>
+            <div class="box-subtitle text-red">Within 4 Minutes</div>
+            <p class="box-desc">Attackers forward emails, swap recovery numbers, drain crypto wallets, and execute fraudulent credit card transactions.</p>
+          </div>
+
+          <div class="content-box border-cyan">
+            <div class="box-num text-cyan">04</div>
+            <div class="box-title">$50k Cost Gap</div>
+            <div class="box-subtitle text-cyan">Enterprise Barrier</div>
+            <p class="box-desc">Enterprise automated SOAR tools cost over $50,000/year and require a Tier-3 SOC team. Everyday people and small teams have zero real-time defense.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: Proposed Solution -->
+    <div class="slide" data-slide="3">
+      <div class="slide-tag">2. Proposed Solution</div>
+      <h2 class="slide-title">SentinelFlow: Autonomous Multi-Agent SecOps on Fetch.ai</h2>
+      <div class="slide-body">
+        <div class="grid-3-cols">
+          <div class="content-box border-cyan">
+            <div class="box-title text-cyan">1. Spot Password Thieves</div>
+            <div class="box-subtitle text-muted">100% Free Telemetry Scans</div>
+            <p class="box-desc">Investigator Agent correlates SIEM authentication logs in milliseconds. Spots credential guessing, impossible travel, and unauthorized MFA bypass attempts.</p>
+            <div class="box-stat">
+              <span class="stat-val text-cyan">&lt; 500 ms</span>
+              <span class="stat-lbl">Correlation Latency</span>
+            </div>
+          </div>
+
+          <div class="content-box border-yellow">
+            <div class="box-title text-yellow">2. 1-Tap Severance</div>
+            <div class="box-subtitle text-muted">0.1 FET (~$0.10 / 10 Cents)</div>
+            <p class="box-desc">Victim taps 'Kick them out' or confirms via chat. Containment Agent instantly invalidates OAuth tokens, revokes sessions everywhere, and firewalls the attacker IP.</p>
+            <div class="box-stat">
+              <span class="stat-val text-yellow">1 Second</span>
+              <span class="stat-lbl">Response Time</span>
+            </div>
+          </div>
+
+          <div class="content-box border-green">
+            <div class="box-title text-green">3. Cryptographic Proof</div>
+            <div class="box-subtitle text-muted">Immutable SHA-256 Receipt</div>
+            <p class="box-desc">Auditor Agent independently inspects post-action state to verify 0 active sessions remain, computing a tamper-proof SHA-256 certificate for bank & insurance dispute records.</p>
+            <div class="box-stat">
+              <span class="stat-val text-green">SHA-256</span>
+              <span class="stat-lbl">Verified On-Chain</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: Swarm Architecture -->
+    <div class="slide" data-slide="4">
+      <div class="slide-tag">3. System Architecture</div>
+      <h2 class="slide-title">Collaborative 5-Agent Swarm (Fetch.ai uAgents Bureau)</h2>
+      <div class="slide-body">
+        <div class="swarm-list">
+          <div class="swarm-item">
+            <div class="swarm-info">
+              <h4>1. Coordinator Agent</h4>
+              <p>Interfaces with ASI:One via Agent Chat Protocol (ACP). Parses natural language, presents adaptive cards, and coordinates swarm response.</p>
+            </div>
+            <span class="swarm-role">ACP & UI Interface</span>
+          </div>
+
+          <div class="swarm-item">
+            <div class="swarm-info">
+              <h4>2. Investigator Agent</h4>
+              <p>Queries authentication tables, tracks geographic IP deltas, and neutralizes indirect prompt injections hidden in user-agent strings.</p>
+            </div>
+            <span class="swarm-role">SIEM & Log Retrieval</span>
+          </div>
+
+          <div class="swarm-item">
+            <div class="swarm-info">
+              <h4>3. Threat Analyst Agent</h4>
+              <p>Applies deterministic rule engine against MITRE ATT&CK: T1110 (Brute Force), T1078 (Compromised Credentials), T1556 (MFA Bypass).</p>
+            </div>
+            <span class="swarm-role">MITRE Scoring (0-100)</span>
+          </div>
+
+          <div class="swarm-item">
+            <div class="swarm-info">
+              <h4>4. Containment Agent</h4>
+              <p>Enforces Human-in-the-Loop policy gate. With user approval, executes zero-trust OAuth revocation and IP firewall quarantine.</p>
+            </div>
+            <span class="swarm-role">Zero-Trust Severance</span>
+          </div>
+
+          <div class="swarm-item">
+            <div class="swarm-info">
+              <h4>5. Auditor Agent</h4>
+              <p>Queries session table post-remediation to confirm active_sessions == 0, then computes an immutable SHA-256 cryptographic certificate.</p>
+            </div>
+            <span class="swarm-role">Closed-Loop Verification</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: Existing Tools -->
+    <div class="slide" data-slide="5">
+      <div class="slide-tag">4. Market Overview</div>
+      <h2 class="slide-title">Existing Tools & Why They Fail Everyday Users</h2>
+      <div class="slide-body">
+        <div class="grid-3-cols">
+          <div class="content-box border-red">
+            <div class="box-title">Enterprise SOAR</div>
+            <div class="box-subtitle text-cyan">Splunk, CrowdStrike, Palo Alto</div>
+            <p class="box-desc" style="margin-bottom:14px;"><strong style="color:var(--accent-green);">Strengths:</strong> Powerful automated playbooks, advanced telemetry correlation.</p>
+            <p class="box-desc"><strong style="color:var(--accent-red);">The Fatal Flaw:</strong> Costs $50k–$200k/year. Requires dedicated Tier-3 SOC engineers. Totally inaccessible for consumers or small businesses.</p>
+          </div>
+
+          <div class="content-box border-yellow">
+            <div class="box-title">Consumer Antivirus</div>
+            <div class="box-subtitle text-cyan">Norton 360, McAfee, Bitdefender</div>
+            <p class="box-desc" style="margin-bottom:14px;"><strong style="color:var(--accent-green);">Strengths:</strong> Scans local filesystem for malware, trojans, and phishing URLs.</p>
+            <p class="box-desc"><strong style="color:var(--accent-yellow);">The Fatal Flaw:</strong> Completely blind to cloud account takeovers! If a hacker breaks into your email or crypto account remotely, antivirus does nothing.</p>
+          </div>
+
+          <div class="content-box border-red">
+            <div class="box-title">Customer Support</div>
+            <div class="box-subtitle text-cyan">Email Tickets, Help Desks</div>
+            <p class="box-desc" style="margin-bottom:14px;"><strong style="color:var(--accent-green);">Strengths:</strong> Familiar human point of contact.</p>
+            <p class="box-desc"><strong style="color:var(--accent-red);">The Fatal Flaw:</strong> 24 to 48-hour response latency. By the time a support rep reads the ticket, credentials and assets are long gone.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: Differentiation -->
+    <div class="slide" data-slide="6">
+      <div class="slide-tag">5. Competitive Differentiation</div>
+      <h2 class="slide-title">Why SentinelFlow Wins — Direct Comparison Matrix</h2>
+      <div class="slide-body">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Capability / Metric</th>
+              <th class="col-highlight">SentinelFlow (Fetch.ai)</th>
+              <th>Enterprise SOAR</th>
+              <th>Consumer Antivirus</th>
+              <th>Customer Support</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-label">Response Latency</td>
+              <td class="col-highlight">Sub-Second (~1.0s)</td>
+              <td>Seconds (Scripted)</td>
+              <td>N/A (No Cloud Action)</td>
+              <td>24 to 48 Hours</td>
+            </tr>
+            <tr>
+              <td class="row-label">Pricing Model</td>
+              <td class="col-highlight">0.1 FET ($0.10) / rescue</td>
+              <td>$50,000+ / year</td>
+              <td>$50 - $100 / year</td>
+              <td>Bundled (Slow)</td>
+            </tr>
+            <tr>
+              <td class="row-label">Interface / UX</td>
+              <td class="col-highlight">Plain English ASI:One Chat</td>
+              <td>Complex SIEM Queries</td>
+              <td>Desktop Tray App</td>
+              <td>Email Ticket Form</td>
+            </tr>
+            <tr>
+              <td class="row-label">Proof of Containment</td>
+              <td class="col-highlight">Cryptographic SHA-256 Proof</td>
+              <td>Internal Server Logs</td>
+              <td>None</td>
+              <td>"We have resolved it"</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Business Models -->
+    <div class="slide" data-slide="7">
+      <div class="slide-tag">6. Business Model</div>
+      <h2 class="slide-title">Sustainable Economics via Fetch.ai Micropayments</h2>
+      <div class="slide-body">
+        <div class="grid-3-cols">
+          <div class="content-box border-cyan">
+            <div class="box-subtitle text-cyan">MODEL A</div>
+            <div class="box-title">B2C Roadside Rescue</div>
+            <p class="box-desc" style="margin-bottom:12px;"><strong>For:</strong> Everyday crypto & web users</p>
+            <ul style="padding-left:18px;font-size:0.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:20px;">
+              <li>Scans & Threat Reports: 100% Free</li>
+              <li>Emergency Lockdown: 0.1 FET (~$0.10)</li>
+              <li>No subscription lock-in or recurring fees</li>
+              <li>Settled on-chain via Fetch.ai escrow</li>
+            </ul>
+            <div class="box-stat">
+              <span class="stat-val text-cyan">0.1 FET</span>
+              <span class="stat-lbl">Per Automated Rescue</span>
+            </div>
+          </div>
+
+          <div class="content-box border-yellow">
+            <div class="box-subtitle text-yellow">MODEL B</div>
+            <div class="box-title">B2B Startup Slack Bot</div>
+            <p class="box-desc" style="margin-bottom:12px;"><strong>For:</strong> 10–50 person companies</p>
+            <ul style="padding-left:18px;font-size:0.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:20px;">
+              <li>Autonomous SecOps in Slack/Discord</li>
+              <li>Replaces $120k/yr junior SOC analyst</li>
+              <li>Automated credential hygiene & audit trail</li>
+              <li>Paid via monthly FET subscription</li>
+            </ul>
+            <div class="box-stat">
+              <span class="stat-val text-yellow">$99 - $299</span>
+              <span class="stat-lbl">Per Month</span>
+            </div>
+          </div>
+
+          <div class="content-box border-green">
+            <div class="box-subtitle text-green">MODEL C</div>
+            <div class="box-title">Agent-to-Agent API</div>
+            <p class="box-desc" style="margin-bottom:12px;"><strong>For:</strong> Autonomous agents on Fetch.ai</p>
+            <ul style="padding-left:18px;font-size:0.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:20px;">
+              <li>DeFi bots, assistants, trading agents</li>
+              <li>Query SentinelFlow to verify partner identities</li>
+              <li>Machine-to-machine micro-fee settlement</li>
+              <li>Fully decentralized trust primitive</li>
+            </ul>
+            <div class="box-stat">
+              <span class="stat-val text-green">0.05 FET</span>
+              <span class="stat-lbl">Per Machine Audit Call</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Status & Verification -->
+    <div class="slide" data-slide="8">
+      <div class="slide-tag">7. Live Status & Verification</div>
+      <h2 class="slide-title">Production Readiness on Fetch.ai Mainnet & Agentverse</h2>
+      <div class="slide-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div class="content-box border-green">
+            <div class="box-subtitle text-muted">AGENTVERSE MAILBOX</div>
+            <div class="box-title text-green" style="font-size:1.6rem;">CONNECTED & ACTIVE</div>
+            <p class="box-desc">Live on agentverse.ai with Agent Chat Protocol (ACP 0.1.0) published and discoverable in ASI:One chat.</p>
+          </div>
+
+          <div class="content-box border-cyan">
+            <div class="box-subtitle text-muted">COORDINATOR ADDRESS</div>
+            <div class="box-title text-cyan" style="font-size:1.15rem;font-family:var(--font-mono);">agent1qwstka0f7sjyd0ux...</div>
+            <p class="box-desc">Standalone daemon running on port 8000 handling multi-turn conversation and 1-tap interactive card workflows.</p>
+          </div>
+
+          <div class="content-box border-green">
+            <div class="box-subtitle text-muted">AUTOMATED TEST SUITE</div>
+            <div class="box-title text-green" style="font-size:1.6rem;">26 / 26 PASSING (100%)</div>
+            <p class="box-desc">Full test coverage across MITRE ATT&CK risk scoring, injection defense, idempotency, and Agentverse benchmarks.</p>
+          </div>
+
+          <div class="content-box border-cyan">
+            <div class="box-subtitle text-muted">INTERACTIVE CONSOLE</div>
+            <div class="box-title text-cyan" style="font-size:1.6rem;">LIVE ON PORT 3000</div>
+            <p class="box-desc">Real working Python REST API backend executing live scans, zero-trust session severance, and real SHA-256 state hashing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Navigation -->
+  <footer class="deck-bottombar">
+    <div class="deck-counter">
+      Slide <strong id="current-slide-num">1</strong> of <span id="total-slide-num">8</span>
+    </div>
+
+    <div class="keyboard-hint">
+      Navigate with <kbd>←</kbd> <kbd>→</kbd> or <kbd>Space</kbd> • Press <kbd>F</kbd> for Fullscreen
+    </div>
+
+    <div class="deck-nav-btns">
+      <button class="nav-arrow-btn" id="btn-prev" aria-label="Previous Slide">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <button class="nav-arrow-btn" id="btn-next" aria-label="Next Slide">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.slide');
+      const currentSlideNum = document.getElementById('current-slide-num');
+      const totalSlideNum = document.getElementById('total-slide-num');
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const btnFullscreen = document.getElementById('btn-fullscreen');
+      const viewport = document.getElementById('viewport');
+
+      let currentIdx = 0;
+      const totalSlides = slides.length;
+      totalSlideNum.textContent = totalSlides;
+
+      function goToSlide(idx) {
+        if (idx < 0) idx = 0;
+        if (idx >= totalSlides) idx = totalSlides - 1;
+
+        slides.forEach((s, i) => {
+          s.classList.remove('active');
+          if (i === idx) s.classList.add('active');
+        });
+
+        currentIdx = idx;
+        currentSlideNum.textContent = currentIdx + 1;
+      }
+
+      btnNext.addEventListener('click', () => goToSlide(currentIdx + 1));
+      btnPrev.addEventListener('click', () => goToSlide(currentIdx - 1));
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+          goToSlide(currentIdx + 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          goToSlide(currentIdx - 1);
+        } else if (e.key === 'Home') {
+          goToSlide(0);
+        } else if (e.key === 'End') {
+          goToSlide(totalSlides - 1);
+        } else if (e.key === 'f' || e.key === 'F') {
+          toggleFullscreen();
+        }
+      });
+
+      // Fullscreen toggle
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+
+      btnFullscreen.addEventListener('click', toggleFullscreen);
+    });
+  </script>
+</body>
+</html>
