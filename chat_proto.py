@@ -119,6 +119,9 @@ def parse_card_selection(text: str) -> dict[str, Any] | None:
     if any(kw in lower for kw in ("how many agents", "multi agent", "single agent", "agents are present", "what agents", "swarm")):
         return {"action": "agent_info"}
 
+    if any(kw in lower for kw in ("make this simple", "make this into simple", "make it simple", "explain simply", "simple words", "simple explanation", "in simple terms", "keep it simple", "too complicated")):
+        return {"action": "simple_explanation"}
+
     if any(kw in lower for kw in ("system status", "agent status", "benchmark status", "benchmark info", "diagnostics")) or lower in ("status", "health"):
         return {"action": "system_status"}
 
@@ -313,6 +316,35 @@ Here is the team:
 * **Automated Unit Tests:** 26/26 Passing (100% Green)
 
 💬 You can ask me any question or test any prompt directly!""",
+                )
+            ],
+        )
+        await ctx.send(sender, reply)
+        return
+
+    # Handle Simple Explanation Requests (Plain English for Everyday People)
+    if action_name == "simple_explanation":
+        reply = ChatMessage(
+            timestamp=datetime.now(timezone.utc),
+            msg_id=uuid4(),
+            content=[
+                TextContent(
+                    type="text",
+                    text="""### 🛡️ SentinelFlow in Plain & Simple Words:
+
+Think of me as a **24/7 personal bodyguard for your online accounts**.
+
+Here is how I protect you in 3 simple steps:
+
+1. 🔎 **I Spot Password Thieves (Free):** If someone in another country guesses your password or breaks into your account, I catch them immediately.
+2. 🔒 **I Kick Them Out in 1 Second (~$0.10 / 0.1 FET):** With 1 tap, I log them out of all devices and block their phone or laptop so they can never get back in.
+3. 📜 **I Give You a Digital Receipt:** You get a tamper-proof certificate proving your account is clean and secure.
+
+---
+💬 **What would you like to try right now?**
+* Reply **"Scan alex@gmail.com"** (Free)
+* Reply **"Kick them out"** (0.1 FET)
+* Or just reply **1** (Scan), **2** (Kick Out), or **3** (Login History)""",
                 )
             ],
         )
