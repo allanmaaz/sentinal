@@ -1,285 +1,126 @@
 # SentinelFlow 🛡️
-### Autonomous SecOps Incident Investigation & Verified Response Agent
-**Built for the ASI:One Agent Challenge ("From Intent to Action")**  
-**Hackathon:** Fetch-A-Thon 3.0 (October 24, 2026)  
-**Team F-ups:**  
-- **Meer Mohammed Shoaib (Team Lead):** Architecture, AI Reasoning, Security Policies, Threat Modeling  
-- **Mohammed Maaz:** Agent Platform, Agentverse Registration, ACP Protocol, Deployment  
-- **Prithvi S:** Tools, Synthetic Telemetry Data, Reliability Gauntlet Testing, Submission Documentation  
-
-**Live Agentverse Agent Profile:**  
-👉 [https://agentverse.ai/agents/details/agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy](https://agentverse.ai/agents/details/agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy)  
-
-**Public GitHub Repository:**  
-👉 [https://github.com/allanmaaz/sentinal.git](https://github.com/allanmaaz/sentinal.git)
+### Autonomous Cybersecurity Swarm for Everyday People & Modern Teams
+> **Built for Fetch.ai / ASI:One Hackathon — Fetch-A-Thon 3.0**  
+> **Team F-ups:** Meer Mohammed Shoaib, Mohammed Maaz, Prithvi S  
+> 🔗 **Live Agentverse Profile:** [agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy](https://agentverse.ai/agents/details/agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy)  
+> 🔍 **Live Inspector:** [Inspect Agent on Port 8000](https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy)  
+> 🐙 **GitHub Repository:** [allanmaaz/sentinal](https://github.com/allanmaaz/sentinal)
 
 ---
 
-## 🌟 Overview
-Most AI security solutions stop at conversation—generating theoretical advice that an analyst must still manually investigate and execute.
+## 💡 What is SentinelFlow?
 
-**SentinelFlow** turns natural-language security intent into **autonomous, evidence-backed actions**:
-1. **Dual-Protocol Access (ACP + MCP)**:
-   - **ACP (Agent Chat Protocol)**: Powers Fetch.ai ASI:One conversational experiences with rich, interactive UI cards (`MetadataContent`).
-   - **MCP (Model Context Protocol)**: Exposes SecOps tools over standard JSON-RPC 2.0 stdio for external LLM clients (Claude Desktop, Cursor, FastMCP).
-2. **Dual-Persona Experience**:
-   - **Real-World Consumer Mode**: Empathetic, zero-jargon plain English for everyday users ("Someone hacked my account alex@gmail.com"), 1-tap emergency rescue with 0.1 FET, and Personal Safety Certificate.
-   - **Enterprise SOC Analyst Mode**: Tier-3 SOC reports, MITRE ATT&CK correlation, and SIEM telemetry.
-3. **Deterministically searches SIEM and authentication logs** without fabricating records.
-4. **Applies explainable MITRE ATT&CK risk-scoring rules** (Brute Force, Impossible Travel, Privilege Escalation).
-5. **Surfaces Dynamic Interactive Cards Suite** in ASI:One (Risk Assessment, Response Approval, Verification Receipt, Forensics, Onboarding).
-6. **Enforces a strict Human-in-the-Loop (HITL) Policy Gate** requiring explicit approval for high-impact actions.
-7. **Executes safe, simulated containment** (e.g., revoking compromised sessions, blocking attacker IPs).
-8. **Settles containment via Fetch.ai Payment Protocol** (`0.1 FET` SECaaS micro-transaction).
-9. **Verifies the actual post-action system state** and outputs **Tamper-Evident Cryptographic SHA-256 Audit Receipt** directly inside ASI:One!
+When an everyday person gets an alert saying *"Someone logged into your account from Nigeria,"* they panic. They don't know what to do, customer support takes 48 hours, and by then their accounts, money, or identity are stolen.
+
+**SentinelFlow** is an autonomous AI cybersecurity bodyguard. You talk to it in plain English inside **ASI:One chat**. It scans your account for hackers in seconds, lets you kick them out with **1 tap for 0.1 FET (~$0.10)**, and provides a tamper-proof digital safety receipt proving your account is secure.
 
 ---
 
-| Capability | Description |
-| :--- | :--- |
-| **Fetch.ai Multi-Agent Swarm (MAS)** | Decentralized swarm of 5 specialized `uAgents` collaborating via message models and Fetch.ai `Bureau`. |
-| **Agent Chat Protocol (ACP)** | Native implementation of `uagents_core.contrib.protocols.chat` with immediate message acknowledgments. |
-| **Model Context Protocol (MCP)** | Standardized JSON-RPC 2.0 tool server (`mcp_server.py`) for Claude Desktop, Cursor, and IDEs. |
-| **ASI:One Interactive Cards** | Dynamic, guided element-tree UI cards with threat level badges, MITRE tactic chips, and one-tap action buttons. |
-| **Zero-Hallucination SIEM Engine** | Deterministic log querying ensuring that findings reference verified, immutable log event IDs. |
-| **Indirect Prompt Injection Defense** | Sanitizes user inputs and raw ingested log fields (e.g. malicious User-Agent strings) to prevent prompt hijacking. |
-| **Closed-Loop State Verification** | Never claims containment succeeded without independently inspecting the resulting system state. |
-| **10/10 Reliability Gauntlet** | Full automated pytest suite proving resilience against tool timeouts, state mismatches, and unauthorized actions. |
-
----
-
-## 🤖 Specialized Fetch.ai `uAgents` Swarm
-
-SentinelFlow decomposes the SecOps incident lifecycle across **5 specialized Fetch.ai agents** cooperating within a `Bureau`:
+## ⚡ The 3-Step Simple Process
 
 ```
-                           ┌───────────────────────────────┐
-                           │          ASI:One UI           │
-                           └───────────────┬───────────────┘
-                                           │ (ACP Protocol)
-                                           ▼
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        SENTINELFLOW MULTI-AGENT SWARM (BUREAU)                        │
-│                                                                                        │
-│   ┌────────────────────────────────────────────────────────────────────────────────┐   │
-│   │              1. Coordinator Agent (ASI:One Interface & Swarm Dispatch)        │   │
-│   └──────┬───────────────────────┬───────────────────────┬──────────────────────┬──┘   │
-│          │                       │                       │                      │      │
-│          ▼                       ▼                       ▼                      ▼      │
-│   ┌──────────────┐        ┌──────────────┐        ┌──────────────┐       ┌──────────┐  │
-│   │2.Investigator│        │  3. Analyst  │        │4. Containment│       │5.Auditor │  │
-│   │    Agent     │        │    Agent     │        │    Agent     │       │  Agent   │  │
-│   │ (SIEM Search │        │(MITRE ATT&CK │        │(Policy Gate  │       │(State Ver│  │
-│   │  & Injection │        │ Risk Scoring │        │& Remediation │       │& Audit   │  │
-│   │   Defense)   │        │   0 - 100)   │        │  Execution)  │       │Receipts) │  │
-│   └──────────────┘        └──────────────┘        └──────────────┘       └──────────┘  │
-└────────────────────────────────────────────────────────────────────────────────────────┘
+   1️⃣ Scan Account              2️⃣ 1-Tap Kick Out            3️⃣ Verified Proof
+ ┌───────────────────┐        ┌───────────────────┐        ┌───────────────────┐
+ │ "I got hacked"    │   ──►  │ Tap "Kick Out"    │   ──►  │ Digital Receipt   │
+ │ Catches intruder  │        │ Logs out intruder │        │ 0.1 FET settled   │
+ │ in Lagos, Nigeria │        │ & blocks device   │        │ SHA-256 verified  │
+ └───────────────────┘        └───────────────────┘        └───────────────────┘
 ```
 
-| Agent Name | Fetch.ai Role | Key Responsibilities |
-| :--- | :--- | :--- |
-| **Coordinator Agent** | Orchestrator / ACP | Connects to ASI:One, parses natural intent, presents dynamic cards, dispatches tasks. |
-| **Investigator Agent** | Telemetry Specialist | Executes deterministic queries against SIEM logs, neutralizes indirect prompt injections. |
-| **Threat Analyst Agent** | Cognitive Specialist | Assesses MITRE ATT&CK tactics (Brute Force, Impossible Travel), computes risk scores (0-100). |
-| **Containment Agent** | Policy Gate Specialist | Enforces Human-In-The-Loop approval tokens, executes verified containment actions. |
-| **Auditor Agent** | Compliance Specialist | Independently validates system state post-containment, mints SHA-256 audit receipts. |
+1. **Step 1: Check Account (Free)**  
+   Type *"I think someone got into my account"*, *"Check alex@gmail.com"*, or just reply `1`.  
+   SentinelFlow scans recent login records and tells you in plain English where the intruder logged in and what they did.
+
+2. **Step 2: 1-Tap Emergency Kick Out**  
+   Tap **[🔒 Kick Out Intruder (0.1 FET)]** or type `2` / *"lock it"*.  
+   SentinelFlow immediately logs out all unauthorized phones and computers and blocks the attacker from trying again.
+
+3. **Step 3: Verifiable Digital Safety Receipt**  
+   SentinelFlow double-checks that the intruder is really gone, settles the small **0.1 FET micro-fee** via Fetch.ai escrow, and gives you a cryptographic SHA-256 safety receipt.
 
 ---
 
-## 🔌 Dual-Protocol Architecture: ACP + MCP
+## 👥 The 5-Agent Multi-Agent Swarm (MAS)
 
-SentinelFlow bridges the decentralized Fetch.ai ecosystem with the broader AI tooling standard:
+Behind the simple chat is a decentralized team of **5 specialized Fetch.ai [`uAgents`](agents/)** working together in a [`Bureau`](agents/bureau.py):
 
-```
-                      ┌──────────────────────────────────────────────┐
-                      │            SentinelFlow Core Engine          │
-                      │  (Controller, SIEM Search, MITRE Evaluator,  │
-                      │   HITL Policy Gate, Closed-Loop Verifier)    │
-                      └───────────────┬──────────────┬───────────────┘
-                                      │              │
-                   Agent Chat Protocol│              │Model Context Protocol
-                         (ACP)        │              │       (MCP)
-                                      ▼              ▼
-                     ┌───────────────────┐        ┌────────────────────┐
-                     │ ASI:One / Chat UI │        │ Claude / Cursor /  │
-                     │  Interactive Cards│        │ IDE Tool Calling   │
-                     │  (MetadataContent)│        │   (JSON-RPC 2.0)   │
-                     └───────────────────┘        └────────────────────┘
-```
-
-- **Agent Chat Protocol (ACP)**: Connects to Fetch.ai's decentralized agent network and ASI:One chat UI via Agentverse Mailbox. Delivers conversational replies and interactive UI cards (`agent.py`, `chat_proto.py`, `cards.py`).
-- **Model Context Protocol (MCP)**: Exposes `investigate_security_logins`, `emergency_account_lockdown`, and `verify_containment_proof` as standardized MCP tools for Claude Desktop, Cursor, or IDE agents (`mcp_server.py`).
+| Agent | Icon | Role in Simple English |
+| :--- | :---: | :--- |
+| **Coordinator Agent** | 🎯 | Welcomes you in ASI:One chat, understands plain English, and orchestrates the team. |
+| **Investigator Agent** | 🔎 | Searches login records and neutralizes prompt-injection attacks. |
+| **Threat Analyst Agent**| 🧠 | Calculates danger scores (0–100) to tell real attacks apart from false alarms. |
+| **Containment Agent** | 🔒 | Disconnects the intruder across all devices and blocks their IP address. |
+| **Auditor Agent** | 📜 | Independently inspects your account to verify the intruder is gone and issues the SHA-256 proof. |
 
 ---
 
-## 🎴 ASI:One Interactive Dynamic Cards Suite
+## 💼 Real-World Business Models
 
-SentinelFlow natively integrates with the ASI:One interactive card specification using `MetadataContent` in the Agent Chat Protocol (ACP):
-
-| Card | Kind | Description | Interactive Capabilities |
+| Business Model | Who Pays | How It Makes Money | Price |
 | :--- | :--- | :--- | :--- |
-| **Card A: Risk Assessment** | `custom` | High-visibility threat briefing, risk severity score (`85/100`), suspicious login evidence, account details, and MITRE ATT&CK tags. | Visual threat intelligence chips, geolocation anomaly breakdown, and next steps. |
-| **Card B: Response Approval** | `review` | Human-in-the-Loop policy authorization gate reviewing action scope, impact analysis, and SECaaS escrow fee (`0.1 FET`). | 4 Clickable Action Buttons: `[Approve Session Revocation (0.1 FET)]`, `[Reject the Action]`, `[Request More Information]`, `[Block Attacker IP (0.1 FET)]`. |
-| **Card C: Verification Receipt** | `custom` | Post-remediation closed-loop state proof with SHA-256 audit hash and Fetch.ai payment confirmation. | Cryptographic state receipt, audit ID, and immutable ledger record. |
-| **Card D: Forensic Telemetry** | `detail` | Triggered when analyst selects *"Request More Information"*. Surfaces raw timestamped SIEM audit events. | Deep-dive log viewer with direct approval actions. |
-| **Card E: Welcome & Onboarding** | `custom` | Triggered when any new user says *"hi"*, *"help"*, or *"start"*. Explains capabilities and provides one-click demo launches. | One-click launch buttons: `[Investigate demo-user-104]`, `[Investigate sarah-dev-92]`. |
-
-### Two-Way Card Response Handling
-When an analyst interacts with a card in ASI:One, SentinelFlow parses **both formats**:
-1. **Structured JSON Action Selection**: Triggered when tapping buttons on interactive cards (`{"action": "approve_containment", "target": "demo-user-104", ...}`).
-2. **Natural Language Analyst Chat**: Typed naturally in the chat window (e.g., *"Approve session revocation"*, *"Reject the action"*, *"Request more information"*, *"Block IP"*).
+| **Consumer Roadside Rescue** | Everyday users & crypto holders | Pay-per-rescue micro-fee or monthly subscription | $1.00 / rescue or $4.99/mo |
+| **Startup Slack Security Bot** | 10–50 person companies | Autonomous security in Slack replacing expensive analysts | $99 – $299 / month |
+| **Agent-to-Agent Marketplace** | Other AI agents on Fetch.ai | Automated security checks for trading bots and assistants | 0.1 FET per audit call |
 
 ---
 
-## 🚀 Technical Architecture
+## 🎴 Native ASI:One Interactive Cards
 
-```
-User Intent (ASI:One / Agentverse)
-       │
-       ▼
-Agentverse Mailbox ────► SentinelFlow SecOps Agent (uAgents + ACP)
-                                │
-               ┌────────────────┴────────────────┐
-               ▼                                 ▼
-   Input & Injection Sanitizer       ASI:One Interactive Cards
-               │                          │
-               ▼                          ├─► Card A (Risk Assessment)
-      Controller Engine                   ├─► Card B (Response Approval)
-         │          │                     ├─► Card C (Verification Receipt)
-         ▼          ▼                     ├─► Card D (Forensics)
-   Log Search    MITRE Risk Engine        └─► Card E (Welcome & Onboarding)
-   (Deterministic)  (Score 0-100)
-         │          │
-         └────┬─────┘
-              ▼
-      Policy & Approval Gate
-              │ [Approved by Analyst via Card or Chat]
-              ▼
-   Multi-Agent Remediation (A2A)
-              │
-              ├─► Fetch.ai Payment Protocol (0.1 FET SECaaS Settlement)
-              ▼
-      Simulated Containment (Session Revocation / IP Block)
-              │
-              ▼
-      Closed-Loop Verifier (Deterministic SHA-256 State Proof)
-```
+SentinelFlow doesn't just send text walls — it renders native **Fetch.ai interactive cards**:
+
+* **Card A (Security Alert)**: Clear plain-English alert showing intruder location and device.
+* **Card B (1-Tap Lockdown)**: Primary action button to kick the intruder out for 0.1 FET.
+* **Card C (Safety Certificate)**: Digital receipt with SHA-256 proof and next safety steps.
+* **Card D (Login History)**: Simple chronological list of recent logins and devices.
+* **Card E (Welcome Menu)**: 4 easy buttons so you never have to type complex commands.
+
+> 💡 **Shortcuts:** You can always just type `1` (Scan), `2` (Kick Out), `3` (History), or `4` (Safe / All Good)!
 
 ---
 
-## 🛠️ Quickstart Guide
+## 🛠️ Quickstart (Run in 3 Steps)
 
-### 1. Prerequisites
-- Python 3.10+ (Recommended: Python 3.12)
-- Git
-
-### 2. Installation
+### 1. Clone & Setup
 ```bash
-# Clone the repository
 git clone https://github.com/allanmaaz/sentinal.git
 cd sentinal
-
-# Create and activate virtual environment
-python3.12 -m venv venv
+python3 -m venv venv
 source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 3. Configuration
-Copy the sample environment file:
+### 2. Configure Environment
 ```bash
 cp .env.example .env
 ```
-Default settings in `.env`:
-```env
-AGENT_NAME="SentinelFlow SecOps Agent"
-AGENT_SEED_PHRASE="sentinelflow-cyber-incident-agent-seed-2026"
-AGENT_PORT=8000
-AGENT_MAILBOX=True
-ASI1_API_KEY="sk_fa69009adcea471ba1b9006d979c0f8953d0da9df14947589ef1a56124192d9c"
-```
+*(Your `.env` comes pre-configured with agent ports and Mailbox enabled).*
 
-### 4. Running the Agent with Agentverse Mailbox
-Start the agent locally:
+### 3. Run the Swarm
 ```bash
-python agent.py
-```
-On startup, `uAgents` will output:
-```
-============================================================
-🛡️  SentinelFlow Agent Initialized: SentinelFlow SecOps Agent
-📍 Agent Address: agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy
-🌐 Protocol: Agent Chat Protocol (ACP) Published
-📬 Mailbox Enabled: True
-============================================================
-Ready to receive cybersecurity investigation tasks via ASI:One.
+# Run standalone coordinator connected to ASI:One Mailbox
+python agent.py --standalone
+
+# Or run all 5 swarm agents together in a Bureau
+python -m agents.bureau
 ```
 
 ---
 
-## 🧪 Running the F-ups Reliability Gauntlet (18/18 Tests)
+## 🧪 Automated Test Suite (25/25 Passing)
 
-SentinelFlow includes a comprehensive automated test suite verifying every critical edge case across ACP, MCP, payment, security, and consumer protection:
-
+Run the full reliability test suite:
 ```bash
 pytest -v
 ```
-
-### Gauntlet Results:
-- `T01. Normal investigation (demo-user-104)`: **PASSED** (Finds logs, correlates events, scores risk)
-- `T02. Known suspicious pattern`: **PASSED** (Detects brute-force + travel anomaly + privilege probe)
-- `T03. No matching records (unknown-user-999)`: **PASSED** (Returns `insufficient_data`, zero hallucinations)
-- `T04. Malformed request validation`: **PASSED** (Rejects empty targets and shell injection attempts)
-- `T05. Prompt injection in logs`: **PASSED** (Neutralizes adversarial User-Agent payloads)
-- `T06. Unauthorized containment action`: **PASSED** (Blocks execution without valid approval token)
-- `T07. Tool/API failure resilience`: **PASSED** (Degrades safely on SIEM timeouts without claiming success)
-- `T08. Verification mismatch detection`: **PASSED** (Flags when state fails to transition to revoked)
-- `T09. Idempotency & duplicate prevention`: **PASSED** (Prevents duplicate actions, preserves audit ledger)
-- `T10. ASI:One Dynamic Cards & Selection Parsing`: **PASSED** (Validates Cards A, B, C, D, E & button parsing)
-- `T11. Fetch.ai Payment Protocol Spec`: **PASSED** (Verifies Funds schema and seller role)
-- `T12. Multi-Agent A2A Collaboration`: **PASSED** (Verifies ContainmentTask and ContainmentResult schemas)
-- `T13. Real-World Consumer Emergency Lockdown`: **PASSED** (Natural language hack reports, 1-tap lock, and Safety Certificate)
-- `T14. MCP Server Handshake & Ping`: **PASSED** (Validates MCP 2024-11-05 initialize protocol)
-- `T15. MCP Tool Enumeration`: **PASSED** (Lists investigate, lockdown, and verify tools with JSON schemas)
-- `T16. MCP Investigation Execution`: **PASSED** (Runs telemetry investigation via JSON-RPC 2.0 stdio)
-- `T17. MCP Containment & Proof Verification`: **PASSED** (Executes lockdown and verifies SHA-256 state hash)
-- `T18. MCP Error Handling`: **PASSED** (Safely handles unknown methods and malformed tool calls)
-
----
-
-## 💬 Demonstration Scenarios in ASI:One
-
-### Scenario 1: Autonomous Triage & Dual Interactive Cards
-**User in ASI:One:**
-> *"Investigate suspicious login events on account demo-user-104"*
-
-**SentinelFlow Response:**
-1. Acknowledges message immediately via ACP.
-2. Correlates authentication logs for `demo-user-104`.
-3. Detects 5 rapid failed logins from Lagos, Nigeria, followed by impossible travel from San Francisco, and multiple MFA fatigue prompts.
-4. Generates an executive AI briefing via `asi1-mini`.
-5. Renders **Card A (Risk Assessment)**:
-   - Threat Level: `CRITICAL RISK` (Score: 85/100)
-   - MITRE ATT&CK: `T1110.001 (Password Spraying)`, `T1078 (Valid Accounts)`, `T1556 (Modify Auth Process)`
-   - Account & event breakdown.
-6. Renders **Card B (Response Approval)**:
-   - Action & Impact Analysis: Invalidate 3 active sessions, quarantine ingress IP `198.51.100.42`.
-   - SECaaS Fee: `0.1 FET`.
-   - 4 Action Buttons: `[Approve Session Revocation (0.1 FET)]`, `[Reject the Action]`, `[Request More Information]`, `[Block Attacker IP (0.1 FET)]`.
-7. Analyst clicks **`[Approve Session Revocation (0.1 FET)]`** (or types *"Approve session revocation"*).
-8. SentinelFlow validates authorization, revokes active sessions, settles 0.1 FET, verifies state (`sessions_revoked`), and renders **Card C (Verification Receipt)** with cryptographic SHA-256 audit proof!
-
-### Scenario 2: Deep-Dive Forensic Inspection
-**User clicks:** `[Request More Information]` (or types *"Request more info"*).  
-**SentinelFlow Response:** Renders **Card D (Forensic Telemetry)** displaying raw, timestamped SIEM audit events and re-offering the decision buttons.
-
-### Scenario 3: Onboarding & Discovery for Anyone
-**User in ASI:One:** *"Hello"* or *"Help"*  
-**SentinelFlow Response:** Renders **Card E (Welcome & Discovery)** with an introduction, key capabilities, and one-click launch buttons to explore demo scenarios.
+All **25 tests pass** in ~11 seconds, verifying:
+* Multi-agent bureau coordination
+* ASI:One interactive card generation & button click parsing
+* Conversational human dialogue & numeric shortcuts (`1`, `2`, `3`, `4`)
+* Agent address mention stripping (`@agent1...`)
+* Prompt-injection defense & cryptographic state verification
+* Fetch.ai payment protocol & Model Context Protocol (MCP) server
 
 ---
 
 ## 📄 License
-MIT License. Built for the Fetch.ai ASI:One Agent Challenge 2026 by Team F-ups.
+MIT License. Built with ❤️ for **Fetch-A-Thon 3.0** by **Team F-ups**.
