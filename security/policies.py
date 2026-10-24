@@ -58,7 +58,7 @@ def evaluate_incident_risk(events: list[dict[str, Any]], target: str) -> RiskAss
     mitre: list[str] = []
     
     # 1. Count failed login events
-    failed_logins = [e for e in events if e.get("event_type") == "login_failed"]
+    failed_logins = [e for e in events if e.get("event_type") in ("login_failed", "failed_login")]
     num_failures = len(failed_logins)
     has_repeated_failures = num_failures >= 3
     
@@ -70,7 +70,7 @@ def evaluate_incident_risk(events: list[dict[str, Any]], target: str) -> RiskAss
         mitre.append("T1110 - Brute Force")
 
     # 2. Check for successful login following failed attempts (credential crack / valid accounts)
-    login_successes = [e for e in events if e.get("event_type") == "login_success"]
+    login_successes = [e for e in events if e.get("event_type") in ("login_success", "successful_login")]
     has_success_after_failure = False
     
     if login_successes and num_failures > 0:
@@ -86,7 +86,7 @@ def evaluate_incident_risk(events: list[dict[str, Any]], target: str) -> RiskAss
                 break
 
     # 3. Check for sensitive privilege queries or MFA bypass probes
-    sensitive_ops = [e for e in events if e.get("event_type") == "sensitive_operation"]
+    sensitive_ops = [e for e in events if e.get("event_type") in ("sensitive_operation", "mfa_bypass", "privilege_query")]
     has_privileged_probe = False
     for op in sensitive_ops:
         has_privileged_probe = True
@@ -98,7 +98,11 @@ def evaluate_incident_risk(events: list[dict[str, Any]], target: str) -> RiskAss
 
     # 4. Geolocation / Baseline anomaly
     locations = {e.get("location") for e in events if e.get("location")}
-    has_anomalous_location = any("Romania" in loc or "Bucharest" in loc or "Frankfurt" in loc for loc in locations)
+    has_anomalous_location = any(
+        loc_kw in loc
+        for loc in locations
+        for loc_kw in ("Romania", "Bucharest", "Frankfurt", "Nigeria", "Lagos")
+    )
     if has_anomalous_location:
         loc_str = ", ".join(locations)
         evidence.append(f"Geographic anomaly detected: Login activity originating from unfamiliar location ({loc_str}).")

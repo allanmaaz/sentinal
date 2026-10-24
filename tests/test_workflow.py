@@ -232,4 +232,50 @@ def test_t14_conversational_human_parsing_and_agent_mention_stripping():
     assert who["action"] == "welcome"
 
 
+def test_t15_agentverse_benchmark_evaluations():
+    """T15: Validate exact handling of all 5 Agentverse benchmark evaluation prompts."""
+    # Benchmark Prompt 1: Login history request
+    p1 = "Can you show me the login history for my account so I can see who accessed it recently?"
+    res1 = parse_card_selection(p1)
+    assert res1 is not None
+    assert res1["action"] == "request_more_info"
+    assert res1["target"] == "demo-user-104"
+
+    # Benchmark Prompt 2: Verification / Re-entry explanation
+    p2 = "After you kick out the intruder, how do I know for sure they're actually gone and can't get back in?"
+    res2 = parse_card_selection(p2)
+    assert res2 is not None
+    assert res2["action"] == "verification_explanation"
+
+    # Benchmark Prompt 3: Pricing inquiry
+    p3 = "Someone logged into my account from a device I don't recognize. How much will it cost to kick them out and lock my account right now?"
+    res3 = parse_card_selection(p3)
+    assert res3 is not None
+    assert res3["action"] == "pricing_info"
+
+    # Benchmark Prompt 4: Scan alex@gmail.com for suspicious logins
+    p4 = "I think someone got into my email account — can you scan alex@gmail.com and tell me if there are any suspicious logins?"
+    res4 = parse_card_selection(p4)
+    assert res4 is not None
+    assert res4["action"] == "investigate_target"
+    assert res4["target"] == "alex@gmail.com"
+    # Ensure controller detects breach on alex@gmail.com
+    controller = SentinelFlowController()
+    inv_res = controller.process_investigation_request(
+        intent="investigate_suspicious_logins",
+        target=res4["target"],
+    )
+    assert inv_res["status"] == "needs_confirmation"
+    assert inv_res["risk_score"] >= 75
+    assert inv_res["risk_level"] in ("high", "critical")
+    assert any("Lagos, Nigeria" in ev or "unfamiliar location" in ev for ev in inv_res["evidence"])
+
+    # Benchmark Prompt 5: SHA-256 safety certificate inquiry
+    p5 = "What is the SHA-256 safety certificate and how can I use it as proof that my account is secure?"
+    res5 = parse_card_selection(p5)
+    assert res5 is not None
+    assert res5["action"] == "sha256_explanation"
+
+
+
 
