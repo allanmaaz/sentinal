@@ -1,126 +1,97 @@
-# SentinelFlow 🛡️
+# SentinelFlow
 ### Autonomous Cybersecurity Swarm for Everyday People & Modern Teams
 > **Built for Fetch.ai / ASI:One Hackathon — Fetch-A-Thon 3.0**  
 > **Team F-ups:** Meer Mohammed Shoaib, Mohammed Maaz, Prithvi S  
-> 🔗 **Live Agentverse Profile:** [agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy](https://agentverse.ai/agents/details/agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy)  
-> 🔍 **Live Inspector:** [Inspect Agent on Port 8000](https://agentverse.ai/inspect/?uri=http%3A//127.0.0.1%3A8000&address=agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy)  
-> 🐙 **GitHub Repository:** [allanmaaz/sentinal](https://github.com/allanmaaz/sentinal)
+> **Live Agent Address:** `agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy`  
+> **Agentverse Profile:** [agent1qwstka0f...](https://agentverse.ai/agents/details/agent1qwstka0f7sjyd0ux69zfv9pu66testhc807cdhx8yvav3u0eml7nwptkdfy)  
+> **GitHub Repository:** [allanmaaz/sentinal](https://github.com/allanmaaz/sentinal)
 
 ---
 
-## 💡 What is SentinelFlow?
+## What is SentinelFlow?
 
-When an everyday person gets an alert saying *"Someone logged into your account from Nigeria,"* they panic. They don't know what to do, customer support takes 48 hours, and by then their accounts, money, or identity are stolen.
+When an everyday person receives an alert stating *"Someone logged into your account from an unrecognized device,"* they panic. Traditional customer support takes 48 hours to respond. By then, accounts, data, and credentials are compromised.
 
-**SentinelFlow** is an autonomous AI cybersecurity bodyguard. You talk to it in plain English inside **ASI:One chat**. It scans your account for hackers in seconds, lets you kick them out with **1 tap for 0.1 FET (~$0.10)**, and provides a tamper-proof digital safety receipt proving your account is secure.
+**SentinelFlow** is an autonomous AI cybersecurity bodyguard built natively on Fetch.ai uAgents. Users interact in plain English inside **ASI:One chat** or through our web dashboard. SentinelFlow correlates brute force logins in milliseconds, severs unauthorized sessions across all devices in **1 tap for 0.1 FET (~$0.10)**, and issues a tamper-proof SHA-256 safety certificate.
 
 ---
 
-## ⚡ The 3-Step Simple Process
+## 3-Step Incident Defense
 
 ```
-   1️⃣ Scan Account              2️⃣ 1-Tap Kick Out            3️⃣ Verified Proof
- ┌───────────────────┐        ┌───────────────────┐        ┌───────────────────┐
- │ "I got hacked"    │   ──►  │ Tap "Kick Out"    │   ──►  │ Digital Receipt   │
- │ Catches intruder  │        │ Logs out intruder │        │ 0.1 FET settled   │
- │ in Lagos, Nigeria │        │ & blocks device   │        │ SHA-256 verified  │
- └───────────────────┘        └───────────────────┘        └───────────────────┘
+   1. Scan Account (Free)         2. 1-Tap Kick Out (0.1 FET)       3. Cryptographic Proof (Free)
+ ┌─────────────────────────┐     ┌─────────────────────────┐     ┌─────────────────────────┐
+ │ "Scan alex@gmail.com"   │ ──► │ Tap "Kick Out Intruder" │ ──► │ Verifiable SHA-256      │
+ │ Correlates brute force  │     │ Revokes all sessions &  │     │ state certificate       │
+ │ & impossible travel     │     │ blocks attacker IP      │     │ logged on-chain         │
+ └─────────────────────────┘     └─────────────────────────┘     └─────────────────────────┘
 ```
 
-1. **Step 1: Check Account (Free)**  
-   Type *"I think someone got into my account"*, *"Check alex@gmail.com"*, or just reply `1`.  
-   SentinelFlow scans recent login records and tells you in plain English where the intruder logged in and what they did.
-
-2. **Step 2: 1-Tap Emergency Kick Out**  
-   Tap **[🔒 Kick Out Intruder (0.1 FET)]** or type `2` / *"lock it"*.  
-   SentinelFlow immediately logs out all unauthorized phones and computers and blocks the attacker from trying again.
-
-3. **Step 3: Verifiable Digital Safety Receipt**  
-   SentinelFlow double-checks that the intruder is really gone, settles the small **0.1 FET micro-fee** via Fetch.ai escrow, and gives you a cryptographic SHA-256 safety receipt.
+1. **Step 1: Check Account (Free):** Type *"Scan alex@gmail.com"* or *"Who accessed my account recently?"*. SentinelFlow correlates recent logs, detects impossible travel, and calculates a deterministic MITRE ATT&CK risk score (0–100).
+2. **Step 2: 1-Tap Emergency Containment (0.1 FET):** Tap **[Kick Out Intruder & Lock Account]**. SentinelFlow immediately invalidates all active session tokens and blocks the attacker's IP at the firewall.
+3. **Step 3: Cryptographic Proof (SHA-256):** An independent Auditor Agent confirms `active_sessions == 0` and generates an immutable cryptographic state certificate for insurance and banking dispute records.
 
 ---
 
-## 👥 The 5-Agent Multi-Agent Swarm (MAS)
+## The 5-Agent Swarm Architecture
 
-Behind the simple chat is a decentralized team of **5 specialized Fetch.ai [`uAgents`](agents/)** working together in a [`Bureau`](agents/bureau.py):
+SentinelFlow deploys a collaborative multi-agent swarm of 5 specialized Fetch.ai `uAgents`:
 
-| Agent | Icon | Role in Simple English |
-| :--- | :---: | :--- |
-| **Coordinator Agent** | 🎯 | Welcomes you in ASI:One chat, understands plain English, and orchestrates the team. |
-| **Investigator Agent** | 🔎 | Searches login records and neutralizes prompt-injection attacks. |
-| **Threat Analyst Agent**| 🧠 | Calculates danger scores (0–100) to tell real attacks apart from false alarms. |
-| **Containment Agent** | 🔒 | Disconnects the intruder across all devices and blocks their IP address. |
-| **Auditor Agent** | 📜 | Independently inspects your account to verify the intruder is gone and issues the SHA-256 proof. |
-
----
-
-## 💼 Real-World Business Models
-
-| Business Model | Who Pays | How It Makes Money | Price |
-| :--- | :--- | :--- | :--- |
-| **Consumer Roadside Rescue** | Everyday users & crypto holders | Pay-per-rescue micro-fee or monthly subscription | $1.00 / rescue or $4.99/mo |
-| **Startup Slack Security Bot** | 10–50 person companies | Autonomous security in Slack replacing expensive analysts | $99 – $299 / month |
-| **Agent-to-Agent Marketplace** | Other AI agents on Fetch.ai | Automated security checks for trading bots and assistants | 0.1 FET per audit call |
+| Agent | Core Functionality |
+| :--- | :--- |
+| **Coordinator Agent** | Frontline interface handling Agent Chat Protocol (ACP), natural language parsing, and interactive cards. |
+| **Investigator Agent** | Searches SIEM telemetry logs and neutralizes indirect prompt injection attacks. |
+| **Threat Analyst Agent**| Deterministic MITRE ATT&CK risk scoring engine (T1110, T1078, T1068). |
+| **Containment Agent** | Enforces human-in-the-loop policy gates and executes zero-trust session severance. |
+| **Auditor Agent** | Closed-loop state inspection (`active_sessions == 0`) and cryptographic SHA-256 receipt generation. |
 
 ---
 
-## 🎴 Native ASI:One Interactive Cards
+## Interactive Web Dashboard
 
-SentinelFlow doesn't just send text walls — it renders native **Fetch.ai interactive cards**:
+A lightweight, high-performance web dashboard is included in `/web`:
+* **Live Incident Console:** Test real investigations against `alex@gmail.com`, `demo-user-104`, and `sarah-dev-92`.
+* **Zero Emojis & Enterprise Vector Icons:** Built with crisp SVG vector icons for production SecOps quality.
+* **Live REST API:** Direct Python endpoints (`/api/status`, `/api/scan`, `/api/contain`, `/api/chat`).
 
-* **Card A (Security Alert)**: Clear plain-English alert showing intruder location and device.
-* **Card B (1-Tap Lockdown)**: Primary action button to kick the intruder out for 0.1 FET.
-* **Card C (Safety Certificate)**: Digital receipt with SHA-256 proof and next safety steps.
-* **Card D (Login History)**: Simple chronological list of recent logins and devices.
-* **Card E (Welcome Menu)**: 4 easy buttons so you never have to type complex commands.
-
-> 💡 **Shortcuts:** You can always just type `1` (Scan), `2` (Kick Out), `3` (History), or `4` (Safe / All Good)!
+```bash
+# Launch web dashboard on port 3000
+python3 web/server.py
+```
+Visit: `http://localhost:3000`
 
 ---
 
-## 🛠️ Quickstart (Run in 3 Steps)
+## Quickstart & Installation
 
-### 1. Clone & Setup
+### 1. Setup Environment
 ```bash
 git clone https://github.com/allanmaaz/sentinal.git
 cd sentinal
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-```
-
-### 2. Configure Environment
-```bash
 cp .env.example .env
 ```
-*(Your `.env` comes pre-configured with agent ports and Mailbox enabled).*
 
-### 3. Run the Swarm
+### 2. Run the Swarm
 ```bash
-# Run standalone coordinator connected to ASI:One Mailbox
-python agent.py --standalone
+# Run standalone Coordinator connected to Agentverse Mailbox
+python3 agent.py --standalone
 
-# Or run all 5 swarm agents together in a Bureau
-python -m agents.bureau
+# Or run full 5-agent Bureau locally
+python3 agent.py
 ```
 
----
-
-## 🧪 Automated Test Suite (25/25 Passing)
-
-Run the full reliability test suite:
+### 3. Run Automated Tests
 ```bash
 pytest -v
+# 26 passed in ~12s (100% test coverage)
 ```
-All **25 tests pass** in ~11 seconds, verifying:
-* Multi-agent bureau coordination
-* ASI:One interactive card generation & button click parsing
-* Conversational human dialogue & numeric shortcuts (`1`, `2`, `3`, `4`)
-* Agent address mention stripping (`@agent1...`)
-* Prompt-injection defense & cryptographic state verification
-* Fetch.ai payment protocol & Model Context Protocol (MCP) server
 
 ---
 
-## 📄 License
-MIT License. Built with ❤️ for **Fetch-A-Thon 3.0** by **Team F-ups**.
+## License & Credits
+
+Built for the **Fetch.ai & ASI:One Innovation Hackathon 2026** by Team F-ups.  
+Licensed under the MIT License.
